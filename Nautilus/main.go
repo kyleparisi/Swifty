@@ -2,8 +2,6 @@ package main
 
 import (
 	"C"
-	"html"
-	"fmt"
 	"bytes"
 
 	"github.com/alecthomas/chroma"

@@ -17,7 +17,7 @@ class WebViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let ptr = highlight("main() {}", "go", "html", "monokai")
+        let ptr = highlight("func main() {}", "go", "html", "monokai")
         let test = String(cString: ptr.r0)
         free(ptr.r0)
         free(ptr.r1)

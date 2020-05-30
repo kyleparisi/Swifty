@@ -1,0 +1,4 @@
+module Nautilus {
+   header "nautilus.h"
+   export *
+}

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C05835E2247EB56C00622443 /* Nautilus in Resources */ = {isa = PBXBuildFile; fileRef = C05835E1247EB56C00622443 /* Nautilus */; };
+		C05835FB247ED62D00622443 /* Nautilus.h in Headers */ = {isa = PBXBuildFile; fileRef = C05835EB247EB60800622443 /* Nautilus.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C05835FD247ED64400622443 /* nautilus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C05835FC247ED64400622443 /* nautilus.a */; };
 		C0B8259C247EA9A60059BFD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */; };
 		C0B8259E247EA9A60059BFD2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B8259D247EA9A60059BFD2 /* ContentView.swift */; };
 		C0B825A0247EA9A70059BFD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B8259F247EA9A70059BFD2 /* Assets.xcassets */; };
@@ -14,7 +17,24 @@
 		C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A4247EA9A70059BFD2 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C05835F1247EB60800622443 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		C05835E1247EB56C00622443 /* Nautilus */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Nautilus; sourceTree = "<group>"; };
+		C05835EB247EB60800622443 /* Nautilus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nautilus.h; sourceTree = "<group>"; };
+		C05835EC247EB60800622443 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C05835FC247ED64400622443 /* nautilus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = nautilus.a; path = Nautilus/nautilus.a; sourceTree = "<group>"; };
 		C0B82598247EA9A60059BFD2 /* Swifty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swifty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0B8259D247EA9A60059BFD2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -30,17 +50,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05835FD247ED64400622443 /* nautilus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C05835DE247EB46500622443 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C05835FC247ED64400622443 /* nautilus.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C05835EA247EB60800622443 /* Nautilus */ = {
+			isa = PBXGroup;
+			children = (
+				C05835EB247EB60800622443 /* Nautilus.h */,
+				C05835EC247EB60800622443 /* Info.plist */,
+			);
+			path = Nautilus;
+			sourceTree = "<group>";
+		};
 		C0B8258F247EA9A60059BFD2 = {
 			isa = PBXGroup;
 			children = (
+				C05835E1247EB56C00622443 /* Nautilus */,
 				C0B8259A247EA9A60059BFD2 /* Swifty */,
+				C05835EA247EB60800622443 /* Nautilus */,
 				C0B82599247EA9A60059BFD2 /* Products */,
+				C05835DE247EB46500622443 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,14 +117,27 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		C0B825B2247EAA0A0059BFD2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C05835FB247ED62D00622443 /* Nautilus.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		C0B82597247EA9A60059BFD2 /* Swifty */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0B825AB247EA9A70059BFD2 /* Build configuration list for PBXNativeTarget "Swifty" */;
 			buildPhases = (
+				C0B825B2247EAA0A0059BFD2 /* Headers */,
 				C0B82594247EA9A60059BFD2 /* Sources */,
 				C0B82595247EA9A60059BFD2 /* Frameworks */,
 				C0B82596247EA9A60059BFD2 /* Resources */,
+				C05835F1247EB60800622443 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */,
+				C05835E2247EB56C00622443 /* Nautilus in Resources */,
 				C0B825A3247EA9A70059BFD2 /* Preview Assets.xcassets in Resources */,
 				C0B825A0247EA9A70059BFD2 /* Assets.xcassets in Resources */,
 			);
@@ -286,12 +341,20 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Swifty/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Swifty/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nautilus",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "$(SRCROOT)/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyleparisi.Swifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -307,12 +370,20 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Swifty/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				INFOPLIST_FILE = Swifty/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Nautilus",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "$(SRCROOT)/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kyleparisi.Swifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

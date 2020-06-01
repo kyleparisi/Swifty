@@ -710,8 +710,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRO-tW-5nS">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <scrollView fixedFrame="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOt-Wd-idF">
+                                <rect key="frame" x="120" y="68" width="240" height="135"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="BtK-iN-OTe">
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="135"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="x0s-tv-EEX" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="135"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="240" height="135"/>
+                                            <size key="maxSize" width="240" height="10000000"/>
+                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        </textView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="i9W-eL-WqZ">
+                                    <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="SyD-7V-Bxh">
+                                    <rect key="frame" x="224" y="0.0" width="16" height="135"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <wkWebView hidden="YES" wantsLayer="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRO-tW-5nS">
+                                <rect key="frame" x="90" y="0.0" width="390" height="270"/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                     <wkPreferences key="preferences"/>
@@ -722,10 +749,11 @@
                             <constraint firstItem="nRO-tW-5nS" firstAttribute="top" secondItem="kTj-to-0N8" secondAttribute="top" id="Tol-cA-CEa"/>
                             <constraint firstAttribute="trailing" secondItem="nRO-tW-5nS" secondAttribute="trailing" id="d9N-DF-L2h"/>
                             <constraint firstAttribute="bottom" secondItem="nRO-tW-5nS" secondAttribute="bottom" id="fl4-GQ-rN6"/>
-                            <constraint firstItem="nRO-tW-5nS" firstAttribute="leading" secondItem="kTj-to-0N8" secondAttribute="leading" id="tPN-Pl-x7Z"/>
+                            <constraint firstItem="nRO-tW-5nS" firstAttribute="leading" secondItem="kTj-to-0N8" secondAttribute="leading" constant="200" id="tPN-Pl-x7Z"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="text" destination="x0s-tv-EEX" id="ySg-pL-cel"/>
                         <outlet property="web" destination="nRO-tW-5nS" id="Z4y-Vi-62r"/>
                     </connections>
                 </viewController>

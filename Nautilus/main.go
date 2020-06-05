@@ -3,19 +3,32 @@ package main
 import (
 	"C"
 	"bytes"
+	"fmt"
 
 	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/formatters"
+	"github.com/alecthomas/chroma/formatters/html"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 )
 
+type preWrapper struct {
+	start func(code bool, styleAttr string) string
+	end   func(code bool) string
+}
+
+func (p preWrapper) Start(code bool, styleAttr string) string {
+	return p.start(code, styleAttr)
+}
+
+func (p preWrapper) End(code bool) string {
+	return p.end(code)
+}
+
 //export highlight
-func highlight(c_source, c_lexer, c_formatter, c_style *C.char) (*C.char, *C.char) {
+func highlight(c_source, c_lexer, c_style *C.char) (*C.char, *C.char) {
 
 	source := C.GoString(c_source)
 	lexer := C.GoString(c_lexer)
-	formatter := C.GoString(c_formatter)
 	style := C.GoString(c_style)
 
 	// Determine lexer.
@@ -28,11 +41,16 @@ func highlight(c_source, c_lexer, c_formatter, c_style *C.char) (*C.char, *C.cha
 	}
 	l = chroma.Coalesce(l)
 
-	// Determine formatter.
-	f := formatters.Get(formatter)
-	if f == nil {
-		f = formatters.Fallback
+	// Formatter.
+	var wrapper = preWrapper{
+		start: func(code bool, styleAttr string) string {
+			return fmt.Sprintf("<pre%s>\n", styleAttr)
+		},
+		end: func(code bool) string {
+			return "</pre>"
+		},
 	}
+	f := html.New(html.WithPreWrapper(wrapper))
 
 	// Determine style.
 	s := styles.Get(style)

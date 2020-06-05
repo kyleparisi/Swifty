@@ -17,7 +17,7 @@ class WebViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let ptr = highlight("func main() {}", "go", "html", "monokai")
+        let ptr = highlight("func main() {}", "go", "github")
         let test = String(cString: ptr.r0)
         free(ptr.r0)
         free(ptr.r1)
@@ -27,23 +27,51 @@ class WebViewController: NSViewController {
         }
         text.isAutomaticQuoteSubstitutionEnabled = false
         text.isAutomaticDashSubstitutionEnabled = false
-//        web.loadHTMLString(test, baseURL: nil)
     }
 }
 
 class MyTextView: NSTextView {
+    override func awakeFromNib() {
+        // gutter
+        self.enclosingScrollView?.verticalRulerView = LineNumberRulerView(textView: self)
+        self.enclosingScrollView?.hasHorizontalRuler = false
+        self.enclosingScrollView?.hasVerticalRuler   = true
+        self.enclosingScrollView?.rulersVisible      = true
+    }
     
     override func didChangeText() {
-        let string = self.textStorage?.string
-        let highlighted = highlight(string, "go", "html", "monokai")
+        let string = self.textStorage!.string
+        let highlighted = highlight(string, "go", "github")
         let content = String(cString: highlighted.r0)
-        print(content)
         free(highlighted.r0)
         free(highlighted.r1)
         let cursor = self.selectedRanges.first?.rangeValue.location
+        print(content)
         if let attributedString = try? NSAttributedString(data: Data(content.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+//            print(attributedString)
             self.textStorage?.setAttributedString(attributedString)
             self.setSelectedRange(NSRange(location: cursor!, length: 0))
         }
+//        (self.enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
+    }
+}
+
+class LineNumberRulerView: NSRulerView {
+    convenience init(textView: NSTextView) {
+        self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
+        self.clientView = textView
+    }
+    
+    override func drawHashMarksAndLabels(in rect: NSRect) {
+        print("draw")
+        let textView = self.clientView as? NSTextView
+        let visibleGlyphsRange = textView?.layoutManager?.glyphRange(forBoundingRect: textView!.visibleRect, in: textView!.textContainer!)
+        print(visibleGlyphsRange)
+        let attributedString = NSAttributedString(string: "1")
+        attributedString.draw(at: NSPoint(x: 5, y: 5))
+    }
+    
+    func refresh() {
+        self.needsDisplay = true
     }
 }

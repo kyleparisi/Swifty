@@ -4,4 +4,4 @@ struct highlight_return {
     char* r1;
 };
 
-extern struct highlight_return highlight(const char* p0,const char* p1,const char* p2,const char* p3);
+extern struct highlight_return highlight(const char* p0,const char* p1,const char* p2);

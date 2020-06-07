@@ -10,26 +10,28 @@ import AppKit
 import WebKit
 import Nautilus
 
-func hexStringToNSColor (hex:String) -> NSColor {
-    var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+extension NSColor {
+    convenience init?(hex: String) {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
-    if (cString.hasPrefix("#")) {
-        cString.remove(at: cString.startIndex)
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if ((cString.count) != 6) {
+            return nil
+        }
+
+        var rgbValue:UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        self.init(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
-
-    if ((cString.count) != 6) {
-        return NSColor.gray
-    }
-
-    var rgbValue:UInt64 = 0
-    Scanner(string: cString).scanHexInt64(&rgbValue)
-
-    return NSColor(
-        red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
-        green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
-        blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-        alpha: CGFloat(1.0)
-    )
 }
 
 class WebViewController: NSViewController {
@@ -39,15 +41,20 @@ class WebViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let style = "github"
-        let bgptr = background(style)
-        let bg = String(cString: bgptr!)
-        text.backgroundColor = hexStringToNSColor(hex: bg)
-        free(bgptr)
+        let style = "solarized-dark"
+        let colorsptr = colors(style)
+        print(colorsptr)
+        let bg = String(cString: colorsptr.bg)
+        let fg = String(cString: colorsptr.fg)
+        text.backgroundColor = NSColor(hex: bg) ?? NSColor.gray
+        text.insertionPointColor = NSColor(hex: fg) ?? NSColor.white
+        free(colorsptr.bg)
+        free(colorsptr.fg)
         let ptr = highlight("func main() {}", "go", style)
         let test = String(cString: ptr.r0)
         free(ptr.r0)
         free(ptr.r1)
+        
         
         if let attributedString = try? NSAttributedString(data: Data(test.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
             text.textStorage?.append(attributedString)

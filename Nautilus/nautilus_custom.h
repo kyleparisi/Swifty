@@ -6,4 +6,9 @@ struct highlight_return {
 
 extern struct highlight_return highlight(const char* p0,const char* p1,const char* p2);
 
-extern char* background(const char* p0);
+struct colors_return {
+	char* fg;
+	char* bg;
+};
+
+extern struct colors_return colors(const char* p0);

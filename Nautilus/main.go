@@ -73,14 +73,22 @@ func highlight(c_source, c_lexer, c_style *C.char) (*C.char, *C.char) {
 
 }
 
-//export background
-func background(c_style *C.char) *C.char {
+//export colors
+func colors(c_style *C.char) (*C.char, *C.char) {
 	s := styles.Get(C.GoString(c_style))
 	colors := s.Get(chroma.Background)
-	r, _ := regexp.Compile("bg:(#.*)")
-	match := r.FindStringSubmatch(colors.String())
-	fmt.Print(match[1])
-	return C.CString(match[1])
+	bgr, _ := regexp.Compile("bg:(#.*)")
+	bgmatch := bgr.FindStringSubmatch(colors.String())
+	fmt.Print(bgmatch)
+	fgr, _ := regexp.Compile("(#.*) bg:")
+	fgmatch := fgr.FindStringSubmatch(colors.String())
+	fg := ""
+	if len(fgmatch) == 0 {
+		fg = "#000000"
+	} else {
+		fg = fgmatch[1]	
+	}
+	return C.CString(fg), C.CString(bgmatch[1])
 }
 
 // We need an entry point; it's ok for this to be empty

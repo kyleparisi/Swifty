@@ -34,6 +34,8 @@ extension NSColor {
     }
 }
 
+let STYLE = "github"
+
 class WebViewController: NSViewController {
     
     @IBOutlet weak var web: WKWebView!
@@ -41,8 +43,7 @@ class WebViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let style = "solarized-dark"
-        let colorsptr = colors(style)
+        let colorsptr = colors(STYLE)
         print(colorsptr)
         let bg = String(cString: colorsptr.bg)
         let fg = String(cString: colorsptr.fg)
@@ -50,7 +51,7 @@ class WebViewController: NSViewController {
         text.insertionPointColor = NSColor(hex: fg) ?? NSColor.white
         free(colorsptr.bg)
         free(colorsptr.fg)
-        let ptr = highlight("func main() {}", "go", style)
+        let ptr = highlight("func main() {}", "go", STYLE)
         let test = String(cString: ptr.r0)
         free(ptr.r0)
         free(ptr.r1)
@@ -75,7 +76,7 @@ class MyTextView: NSTextView {
     
     override func didChangeText() {
         let string = self.textStorage!.string
-        let highlighted = highlight(string, "go", "github")
+        let highlighted = highlight(string, "go", STYLE)
         let content = String(cString: highlighted.r0)
         free(highlighted.r0)
         free(highlighted.r1)

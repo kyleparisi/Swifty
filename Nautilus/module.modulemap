@@ -1,4 +1,4 @@
 module Nautilus {
-   header "nautilus.h"
+   header "nautilus_custom.h"
    export *
 }

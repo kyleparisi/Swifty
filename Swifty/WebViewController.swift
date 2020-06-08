@@ -81,13 +81,12 @@ class MyTextView: NSTextView {
         free(highlighted.r0)
         free(highlighted.r1)
         let cursor = self.selectedRanges.first?.rangeValue.location
-        print(content)
         if let attributedString = try? NSAttributedString(data: Data(content.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
 //            print(attributedString)
             self.textStorage?.setAttributedString(attributedString)
             self.setSelectedRange(NSRange(location: cursor!, length: 0))
         }
-//        (self.enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
+        (self.enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
     }
 }
 
@@ -103,7 +102,10 @@ class LineNumberRulerView: NSRulerView {
         let visibleGlyphsRange = textView?.layoutManager?.glyphRange(forBoundingRect: textView!.visibleRect, in: textView!.textContainer!)
         print(visibleGlyphsRange ?? "")
         let attributedString = NSAttributedString(string: "1")
-        attributedString.draw(at: NSPoint(x: 5, y: 5))
+        attributedString.draw(at: NSPoint(x: 5, y: 0))
+        
+        let attributedString2 = NSAttributedString(string: "2")
+        attributedString2.draw(at: NSPoint(x: 5, y: 14))
     }
     
     func refresh() {

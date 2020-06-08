@@ -101,11 +101,18 @@ class LineNumberRulerView: NSRulerView {
         let textView = self.clientView as? NSTextView
         let visibleGlyphsRange = textView?.layoutManager?.glyphRange(forBoundingRect: textView!.visibleRect, in: textView!.textContainer!)
         print(visibleGlyphsRange ?? "")
-        let attributedString = NSAttributedString(string: "1")
-        attributedString.draw(at: NSPoint(x: 5, y: 0))
-        
-        let attributedString2 = NSAttributedString(string: "2")
-        attributedString2.draw(at: NSPoint(x: 5, y: 14))
+        var newlineRegex: NSRegularExpression
+        do {
+            newlineRegex = try NSRegularExpression(pattern: "\n", options: [])
+        } catch {
+            return
+        }
+        let numberOfLines = newlineRegex.numberOfMatches(in: textView!.string, options: [], range: NSRange(location: 0, length: textView!.string.count))
+        for i in 1...numberOfLines {
+            let attributedString = NSAttributedString(string: String(i))
+            let y = CGFloat(i - 1) * (textView?.layoutManager?.defaultLineHeight(for: textView!.font!) ?? 0)
+            attributedString.draw(at: NSPoint(x: 5, y: y))
+        }
     }
     
     func refresh() {

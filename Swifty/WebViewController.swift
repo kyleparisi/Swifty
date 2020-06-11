@@ -65,8 +65,70 @@ class WebViewController: NSViewController {
     }
 }
 
+class MyTextStorage: NSTextStorage {
+
+    private var isBusyProcessing = false
+    private var storage: NSTextStorage
+    
+    override init() {
+        storage = NSTextStorage()
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("\(#function) is not supported")
+    }
+
+    required init?(pasteboardPropertyList propertyList: Any, ofType type: NSPasteboard.PasteboardType) {
+        fatalError("\(#function) has not been implemented")
+    }
+    
+    override var string: String {
+        return storage.string
+    }
+
+    override func attributes(at location: Int, effectiveRange range: NSRangePointer?) -> [NSAttributedString.Key : Any] {
+        return storage.attributes(at: location, effectiveRange: range)
+    }
+    
+    override func replaceCharacters(in range: NSRange, with str: String) {
+        beginEditing()
+        storage.replaceCharacters(in: range, with: str)
+        edited(.editedCharacters, range: range, changeInLength: (str as NSString).length - range.length)
+        endEditing()
+    }
+    
+    override func processEditing() {
+        self.isBusyProcessing = true
+        defer { self.isBusyProcessing = false }
+
+        // processSyntaxHighlighting()
+
+        super.processEditing()
+    }
+
+    override func setAttributes(_ attrs: [NSAttributedString.Key : Any]?, range: NSRange) {
+
+       // When we are processing, `edited` callbacks will
+       // result in the caret jumping to the end of the document, so
+       // do not send them!
+       guard !isBusyProcessing else {
+           storage.setAttributes(attrs, range: range)
+           return
+       }
+
+       beginEditing()
+       storage.setAttributes(attrs, range: range)
+       self.edited(.editedAttributes, range: range, changeInLength: 0)
+       endEditing()
+   }
+    
+    func processSyntaxHighlighting() {}
+}
+
 class MyTextView: NSTextView {
     override func awakeFromNib() {
+        self.layoutManager?.replaceTextStorage(MyTextStorage())
         // gutter
         self.enclosingScrollView?.verticalRulerView = LineNumberRulerView(textView: self)
         self.enclosingScrollView?.hasHorizontalRuler = false

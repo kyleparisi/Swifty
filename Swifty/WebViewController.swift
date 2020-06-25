@@ -90,6 +90,7 @@ class MyTextStorage: NSTextStorage {
 
     override func replaceCharacters(in range: NSRange, with str: String) {
         beginEditing()
+        let str = str.replacingOccurrences(of: "\t", with: " ")
         storage.replaceCharacters(in: range, with: str)
         edited(.editedCharacters, range: range, changeInLength: (str as NSString).length - range.length)
         endEditing()
@@ -156,10 +157,11 @@ class MyTextView: NSTextView {
         switch string[string.startIndex] {
         case "{":
             super.insertText("}", replacementRange: replacementRange)
+            setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+            break;
         default:
             return
         }
-        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
     }
 
     override func insertNewline(_ sender: Any?) {
@@ -171,7 +173,7 @@ class MyTextView: NSTextView {
         case "}\n":
             print("auto indent")
             super.insertText("  \n}", replacementRange: currentLine)
-            setSelectedRange(NSRange(location: currentLine.location + 1, length: 0))
+            setSelectedRange(NSRange(location: currentLine.location + 2, length: 0))
         default:
             return
         }

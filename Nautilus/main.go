@@ -7,7 +7,7 @@ import (
 	"regexp"
 
 	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/formatters/html"
+	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
 )
@@ -43,15 +43,7 @@ func highlight(c_source, c_lexer, c_style *C.char) (*C.char, *C.char) {
 	l = chroma.Coalesce(l)
 
 	// Formatter.
-	var wrapper = preWrapper{
-		start: func(code bool, styleAttr string) string {
-			return fmt.Sprintf("<pre%s>\n", styleAttr)
-		},
-		end: func(code bool) string {
-			return "</pre>"
-		},
-	}
-	f := html.New(html.WithPreWrapper(wrapper))
+	f := formatters.Get("json")
 
 	// Determine style.
 	s := styles.Get(style)

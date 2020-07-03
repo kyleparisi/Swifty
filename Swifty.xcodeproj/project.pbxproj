@@ -15,6 +15,7 @@
 		C0B825A0247EA9A70059BFD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B8259F247EA9A70059BFD2 /* Assets.xcassets */; };
 		C0B825A3247EA9A70059BFD2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A2247EA9A70059BFD2 /* Preview Assets.xcassets */; };
 		C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A4247EA9A70059BFD2 /* Main.storyboard */; };
+		C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,7 @@
 		C0B825A5247EA9A70059BFD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0B825A7247EA9A70059BFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B825A8247EA9A70059BFD2 /* Swifty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swifty.entitlements; sourceTree = "<group>"; };
+		C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				C0B825A7247EA9A70059BFD2 /* Info.plist */,
 				C0B825A8247EA9A70059BFD2 /* Swifty.entitlements */,
 				C0B825A1247EA9A70059BFD2 /* Preview Content */,
+				C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */,
 			);
 			path = Swifty;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */,
 				C0B8259C247EA9A60059BFD2 /* AppDelegate.swift in Sources */,
 				C016BE652482AD6B00051345 /* WebViewController.swift in Sources */,
 			);

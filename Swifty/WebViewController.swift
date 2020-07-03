@@ -8,7 +8,6 @@
 
 import AppKit
 import Nautilus
-import WebKit
 
 extension NSColor {
     convenience init?(hex: String) {
@@ -36,8 +35,18 @@ extension NSColor {
 
 let STYLE = "github"
 
+struct Token: Decodable {
+    let type: String
+    let value: String
+}
+
+struct Xcode {
+    let CommentSingle = "#177500"
+    let CommentPreproc = "#633820"
+}
+let xcode = Xcode()
+
 class WebViewController: NSViewController {
-    @IBOutlet var web: WKWebView!
     @IBOutlet var text: NSTextView!
 
     override func viewDidLoad() {
@@ -100,7 +109,7 @@ class MyTextStorage: NSTextStorage {
         isBusyProcessing = true
         defer { self.isBusyProcessing = false }
 
-        // processSyntaxHighlighting()
+        processSyntaxHighlighting()
 
         super.processEditing()
     }
@@ -120,7 +129,40 @@ class MyTextStorage: NSTextStorage {
         endEditing()
     }
 
-    func processSyntaxHighlighting() {}
+    func processSyntaxHighlighting() {
+        if (self.editedRange.location == 0 && self.editedRange.length == 0) {
+            return
+        }
+        let highlighted = highlight(self.string, "go", STYLE)
+        let tokensString = String(cString: highlighted.r0)
+        free(highlighted.r0)
+        free(highlighted.r1)
+        let tokens: [Token] = try! JSONDecoder().decode([Token].self, from: tokensString.data(using: .utf8)!)
+        var location = 0, length = 0
+        for token in tokens {
+            length = token.value.count
+            defer { location += length; length = 0 }
+            print(token, location, length)
+            if token.type == "KeywordDeclaration" {
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: NSColor(hex: "#00cd00")!,
+                ]
+                self.setAttributes(attributes, range: NSRange(location: location, length: length))
+                continue
+            }
+            if token.type == "CommentSingle" {
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: NSColor(hex: xcode.CommentSingle)!,
+                ]
+                self.setAttributes(attributes, range: NSRange(location: location, length: length))
+                continue
+            }
+            let attributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: NSColor(hex: "#000000")!,
+            ]
+            self.setAttributes(attributes, range: NSRange(location: location, length: length))
+        }
+    }
 }
 
 class MyTextView: NSTextView {
@@ -134,142 +176,7 @@ class MyTextView: NSTextView {
     }
 
     override func didChangeText() {
-        let string = textStorage!.string
-        let highlighted = highlight(string, "go", STYLE)
-        let content = String(cString: highlighted.r0)
-        free(highlighted.r0)
-        free(highlighted.r1)
-        let cursor = selectedRanges.first?.rangeValue.location
-        if let attributedString = try? NSAttributedString(data: Data(content.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-//            print(attributedString)
-            textStorage?.setAttributedString(attributedString)
-            setSelectedRange(NSRange(location: cursor!, length: 0))
-        }
         (enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
     }
-
-    override func insertText(_ string: Any, replacementRange: NSRange) {
-        super.insertText(string, replacementRange: replacementRange)
-        let string = string as! String
-        if string.count != 1 {
-            return
-        }
-        switch string[string.startIndex] {
-        case "{":
-            super.insertText("}", replacementRange: replacementRange)
-            setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
-            break;
-        default:
-            return
-        }
-    }
-
-    override func insertNewline(_ sender: Any?) {
-        super.insertNewline(sender)
-        let range = selectedRange()
-        let currentLine = (self.string as NSString).lineRange(for: range)
-        let string = (self.string as NSString).substring(with: currentLine)
-        switch string {
-        case "}\n":
-            print("auto indent")
-            super.insertText("  \n}", replacementRange: currentLine)
-            setSelectedRange(NSRange(location: currentLine.location + 2, length: 0))
-        default:
-            return
-        }
-    }
 }
 
-class LineNumberRulerView: NSRulerView {
-    convenience init(textView: NSTextView) {
-        self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
-        clientView = textView
-    }
-
-    override func drawHashMarksAndLabels(in _: NSRect) {
-//        print("draw line numbers")
-        guard let textView = clientView as? NSTextView,
-            let layoutManager = textView.layoutManager,
-            let textContainer = textView.textContainer
-        else {
-            return
-        }
-
-        let visibleGlyphsRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textContainer)
-
-        // Check how many lines are out of the current bounding rect.
-        var lineNumber: Int = 1
-        do {
-            let newlineRegex = try NSRegularExpression(pattern: "\n", options: [])
-            // Check how many lines are out of view; From the glyph at index 0
-            // to the first glyph in the visible rect.
-            lineNumber += newlineRegex.numberOfMatches(in: textView.string, options: [], range: NSMakeRange(0, visibleGlyphsRange.location))
-        } catch {
-            return
-        }
-
-        // Get the index of the first glyph in the visible rect, as starting point...
-        var firstGlyphOfLineIndex = visibleGlyphsRange.location
-
-        // ...then loop through all visible glyphs, line by line.
-        while firstGlyphOfLineIndex < NSMaxRange(visibleGlyphsRange) {
-            // Get the character range of the line we're currently in.
-            let charRangeOfLine = (textView.string as NSString).lineRange(for: NSRange(location: layoutManager.characterIndexForGlyph(at: firstGlyphOfLineIndex), length: 0))
-            // Get the glyph range of the line we're currently in.
-            let glyphRangeOfLine = layoutManager.glyphRange(forCharacterRange: charRangeOfLine, actualCharacterRange: nil)
-
-            var firstGlyphOfRowIndex = firstGlyphOfLineIndex
-            var lineWrapCount = 0
-
-            // Loop through all rows (soft wraps) of the current line.
-            while firstGlyphOfRowIndex < NSMaxRange(glyphRangeOfLine) {
-                // The effective range of glyphs within the current line.
-                var effectiveRange = NSRange(location: 0, length: 0)
-                // Get the rect for the current line fragment.
-                let lineRect = layoutManager.lineFragmentRect(forGlyphAt: firstGlyphOfRowIndex, effectiveRange: &effectiveRange, withoutAdditionalLayout: true)
-
-                // Draw the current line number;
-                // When lineWrapCount > 0 the current line spans multiple rows.
-                if lineWrapCount == 0 {
-                    drawLineNumber(num: lineNumber, atYPosition: lineRect.minY)
-                } else {
-                    break
-                }
-
-                // Move to the next row.
-                firstGlyphOfRowIndex = NSMaxRange(effectiveRange)
-                lineWrapCount += 1
-            }
-
-            // Move to the next line.
-            firstGlyphOfLineIndex = NSMaxRange(glyphRangeOfLine)
-            lineNumber += 1
-        }
-
-        // Draw another line number for the extra line fragment.
-        if let _ = layoutManager.extraLineFragmentTextContainer {
-            drawLineNumber(num: lineNumber, atYPosition: layoutManager.extraLineFragmentRect.minY)
-        }
-    }
-
-    func drawLineNumber(num: Int, atYPosition yPos: CGFloat) {
-        // Unwrap the text view.
-        guard let textView = clientView as? NSTextView,
-            let font = textView.font else {
-            return
-        }
-        // Define attributes for the attributed string.
-        let attrs = [NSAttributedString.Key.font: font]
-        // Define the attributed string.
-        let attributedString = NSAttributedString(string: "\(num)", attributes: attrs)
-        // Get the NSZeroPoint from the text view.
-        let relativePoint = convert(NSZeroPoint, from: textView)
-        // Draw the attributed string to the calculated point.
-        let point = NSPoint(x: 5, y: relativePoint.y + yPos)
-        attributedString.draw(at: point)
-    }
-
-    func refresh() {
-        needsDisplay = true
-    }
-}

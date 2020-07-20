@@ -3,7 +3,9 @@ package main
 import (
 	"C"
 	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
 	"regexp"
 
 	"github.com/alecthomas/chroma"
@@ -42,8 +44,60 @@ func highlight(c_source, c_lexer, c_style *C.char) (*C.char, *C.char) {
 	}
 	l = chroma.Coalesce(l)
 
+	type MyStyleEntry struct {
+		// Hex colours.
+		Color      chroma.Colour `json:"color"`
+		Background chroma.Colour `json:"bg"`
+		Border     chroma.Colour `json:"br"`
+
+		Bold      chroma.Trilean `json:"bold"`
+		Italic    chroma.Trilean `json:"italic"`
+		Underline chroma.Trilean `json:"underline"`
+		NoInherit bool           `json:"noinherit"`
+	}
+
+	type MyToken struct {
+		Type  chroma.TokenType `json:"type"`
+		Value string           `json:"value"`
+		Style MyStyleEntry     `json:"style"`
+	}
+
 	// Formatter.
-	f := formatters.Get("json")
+	formatters.Register("json_styled", chroma.FormatterFunc(func(w io.Writer, s *chroma.Style, it chroma.Iterator) error {
+		fmt.Fprintln(w, "[")
+		i := 0
+		for t := it(); t != chroma.EOF; t = it() {
+			if i > 0 {
+				fmt.Fprintln(w, ",")
+			}
+			style := s.Get(t.Type)
+			mytoken := MyToken{
+				Type:  t.Type,
+				Value: t.Value,
+				Style: MyStyleEntry{
+					Color:      style.Colour,
+					Background: style.Background,
+					Border:     style.Border,
+					Bold:       style.Bold,
+					Italic:     style.Italic,
+					Underline:  style.Underline,
+					NoInherit:  style.NoInherit,
+				},
+			}
+			i++
+			bytes, err := json.Marshal(mytoken)
+			if err != nil {
+				return err
+			}
+			if _, err := fmt.Fprint(w, "  "+string(bytes)); err != nil {
+				return err
+			}
+		}
+		fmt.Fprintln(w)
+		fmt.Fprintln(w, "]")
+		return nil
+	}))
+	f := formatters.Get("json_styled")
 
 	// Determine style.
 	s := styles.Get(style)
@@ -78,7 +132,7 @@ func colors(c_style *C.char) (*C.char, *C.char) {
 	if len(fgmatch) == 0 {
 		fg = "#000000"
 	} else {
-		fg = fgmatch[1]	
+		fg = fgmatch[1]
 	}
 	return C.CString(fg), C.CString(bgmatch[1])
 }

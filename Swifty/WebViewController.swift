@@ -10,15 +10,18 @@ import AppKit
 import Nautilus
 
 extension NSColor {
-    convenience init?(hex: String) {
+    convenience init(hex: String) {
         var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
         if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
         }
 
-        if cString.count != 6 {
-            return nil
+        if cString.count == 3 {
+            let last = cString.last
+            for _ in 3...6 {
+                cString.append(last!)
+            }
         }
 
         var rgbValue: UInt64 = 0
@@ -31,42 +34,33 @@ extension NSColor {
             alpha: CGFloat(1.0)
         )
     }
+
+    convenience init(rgbValue: Int) {
+        self.init(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+
 }
 
-let STYLE = "github"
+struct Style: Decodable {
+    let color: Int
+}
 
-struct Token: Decodable {
+struct Term: Decodable {
     let type: String
     let value: String
+    let style: Style
 }
-
-struct Xcode {
-    let CommentSingle = "#177500"
-    let CommentPreproc = "#633820"
-}
-let xcode = Xcode()
 
 class WebViewController: NSViewController {
     @IBOutlet var text: NSTextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let colorsptr = colors(STYLE)
-//        print(colorsptr)
-        let bg = String(cString: colorsptr.bg)
-        let fg = String(cString: colorsptr.fg)
-        text.backgroundColor = NSColor(hex: bg) ?? NSColor.gray
-        text.insertionPointColor = NSColor(hex: fg) ?? NSColor.white
-        free(colorsptr.bg)
-        free(colorsptr.fg)
-        let ptr = highlight("func main() {}", "go", STYLE)
-        let test = String(cString: ptr.r0)
-        free(ptr.r0)
-        free(ptr.r1)
-
-        if let attributedString = try? NSAttributedString(data: Data(test.utf8), options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
-            text.textStorage?.append(attributedString)
-        }
         text.isAutomaticQuoteSubstitutionEnabled = false
         text.isAutomaticDashSubstitutionEnabled = false
     }
@@ -74,10 +68,10 @@ class WebViewController: NSViewController {
 
 class MyTextStorage: NSTextStorage {
     private var isBusyProcessing = false
-    private var storage: NSTextStorage
+    private var storage: NSMutableAttributedString
 
     override init() {
-        storage = NSTextStorage()
+        storage = NSMutableAttributedString()
         super.init()
     }
 
@@ -99,9 +93,8 @@ class MyTextStorage: NSTextStorage {
 
     override func replaceCharacters(in range: NSRange, with str: String) {
         beginEditing()
-        let str = str.replacingOccurrences(of: "\t", with: " ")
         storage.replaceCharacters(in: range, with: str)
-        edited(.editedCharacters, range: range, changeInLength: (str as NSString).length - range.length)
+        edited(.editedCharacters, range: range, changeInLength: str.count - range.length)
         endEditing()
     }
 
@@ -130,44 +123,27 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        if (self.editedRange.location == 0 && self.editedRange.length == 0) {
-            return
+        let ptr = highlight(string, "go", "dracula")
+        let test = String(cString: ptr.r0)
+        free(ptr.r0)
+        free(ptr.r1)
+        let terms: [Term] = try! JSONDecoder().decode([Term].self, from: test.data(using: .utf8)!)
+        var location = 0
+        for term in terms {
+            let range = NSRange(location: location, length: term.value.count)
+            addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
+            location += term.value.count
         }
-        let highlighted = highlight(self.string, "go", STYLE)
-        let tokensString = String(cString: highlighted.r0)
-        free(highlighted.r0)
-        free(highlighted.r1)
-        let tokens: [Token] = try! JSONDecoder().decode([Token].self, from: tokensString.data(using: .utf8)!)
-        var location = 0, length = 0
-        for token in tokens {
-            length = token.value.count
-            defer { location += length; length = 0 }
-            print(token, location, length)
-            if token.type == "KeywordDeclaration" {
-                let attributes: [NSAttributedString.Key: Any] = [
-                    .foregroundColor: NSColor(hex: "#00cd00")!,
-                ]
-                self.setAttributes(attributes, range: NSRange(location: location, length: length))
-                continue
-            }
-            if token.type == "CommentSingle" {
-                let attributes: [NSAttributedString.Key: Any] = [
-                    .foregroundColor: NSColor(hex: xcode.CommentSingle)!,
-                ]
-                self.setAttributes(attributes, range: NSRange(location: location, length: length))
-                continue
-            }
-            let attributes: [NSAttributedString.Key: Any] = [
-                .foregroundColor: NSColor(hex: "#000000")!,
-            ]
-            self.setAttributes(attributes, range: NSRange(location: location, length: length))
-        }
+
     }
 }
 
 class MyTextView: NSTextView {
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
+        backgroundColor = NSColor(hex: "#000")
+        textColor = NSColor(hex: "#000")
+        insertionPointColor = NSColor(hex: "#fff")
         // gutter
         enclosingScrollView?.verticalRulerView = LineNumberRulerView(textView: self)
         enclosingScrollView?.hasHorizontalRuler = false

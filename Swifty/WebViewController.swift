@@ -48,6 +48,9 @@ extension NSColor {
 
 struct Style: Decodable {
     let color: Int
+    let bold: Int
+    let italic: Int
+    let underline: Int
 }
 
 struct Term: Decodable {
@@ -123,8 +126,9 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        let ptr = highlight(string, "go", "dracula")
+        let ptr = highlight(string, "org", "autumn")
         let test = String(cString: ptr.r0)
+        print(test)
         free(ptr.r0)
         free(ptr.r1)
         let terms: [Term] = try! JSONDecoder().decode([Term].self, from: test.data(using: .utf8)!)
@@ -132,6 +136,17 @@ class MyTextStorage: NSTextStorage {
         for term in terms {
             let range = NSRange(location: location, length: term.value.count)
             addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
+            if term.style.bold == 1 {
+                addAttributes([.font: NSFont.boldSystemFont(ofSize: 12)], range: range)
+            }
+            if term.style.italic == 1 {
+                let fontManager = NSFontManager.shared
+                let newFont = fontManager.convert(font!, toHaveTrait: .italicFontMask)
+                addAttributes([.font: newFont], range: range)
+            }
+            if term.style.underline == 1 {
+                addAttributes([.underlineStyle: 1], range: range)
+            }
             location += term.value.count
         }
 
@@ -141,9 +156,9 @@ class MyTextStorage: NSTextStorage {
 class MyTextView: NSTextView {
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
-        backgroundColor = NSColor(hex: "#000")
-        textColor = NSColor(hex: "#000")
-        insertionPointColor = NSColor(hex: "#fff")
+        backgroundColor = NSColor(hex: "#fff")
+        textColor = NSColor(hex: "#fff")
+        insertionPointColor = NSColor(hex: "#000")
         // gutter
         enclosingScrollView?.verticalRulerView = LineNumberRulerView(textView: self)
         enclosingScrollView?.hasHorizontalRuler = false

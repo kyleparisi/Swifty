@@ -126,7 +126,7 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        let ptr = highlight(string, "org", "autumn")
+        let ptr = highlight(string, "go", "github")
         let test = String(cString: ptr.r0)
         print(test)
         free(ptr.r0)
@@ -164,6 +164,29 @@ class MyTextView: NSTextView {
         enclosingScrollView?.hasHorizontalRuler = false
         enclosingScrollView?.hasVerticalRuler = true
         enclosingScrollView?.rulersVisible = true
+    }
+    
+    override func insertText(_ string: Any, replacementRange: NSRange) {
+        super.insertText(string, replacementRange: replacementRange)
+        let string = string as! String
+        if string.count != 1 {
+            return
+        }
+        switch string[string.startIndex] {
+        case "{":
+            super.insertText("}", replacementRange: replacementRange)
+        case "(":
+            super.insertText(")", replacementRange: replacementRange)
+        case "\"":
+            super.insertText("\"", replacementRange: replacementRange)
+        case "'":
+            super.insertText("'", replacementRange: replacementRange)
+        case "[":
+            super.insertText("]", replacementRange: replacementRange)
+        default:
+            return
+        }
+        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
     }
 
     override func didChangeText() {

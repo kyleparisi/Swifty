@@ -232,6 +232,20 @@ class MyTextView: NSTextView {
         return nil
     }
     
+    override func keyDown(with event: NSEvent) {
+        let modifierFlags = event.modifierFlags
+        let Delete = 51
+        if event.keyCode == Delete && modifierFlags.contains(NSEvent.ModifierFlags.command) {
+            let range  = self.selectedRange()
+            let cursor = range.location
+            guard cursor != NSNotFound else { return }
+            let content = self.string as NSString
+            let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+            setSelectedRange(currentLineRange)
+        }
+        super.keyDown(with: event)
+    }
+    
     override func insertText(_ string: Any, replacementRange: NSRange) {
         
         let string = string as! String
@@ -243,7 +257,6 @@ class MyTextView: NSTextView {
         }
         
         super.insertText(string, replacementRange: replacementRange)
-        
         
         if string.count != 1 {
             return

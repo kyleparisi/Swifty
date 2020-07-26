@@ -234,15 +234,17 @@ class MyTextView: NSTextView {
     
     override func insertText(_ string: Any, replacementRange: NSRange) {
         
+        let string = string as! String
+        
         let jumpChars = ["}", ")", "\"", "'", "]"]
-        if jumpChars.contains(nextCharacter() ?? "") {
+        if (string != "\n" && jumpChars.contains(nextCharacter() ?? "")) { 
             setSelectedRange(NSRange(location: selectedRange().location + 1, length: 0))
             return
         }
         
         super.insertText(string, replacementRange: replacementRange)
         
-        let string = string as! String
+        
         if string.count != 1 {
             return
         }

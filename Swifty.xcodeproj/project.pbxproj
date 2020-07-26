@@ -16,6 +16,10 @@
 		C0B825A3247EA9A70059BFD2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A2247EA9A70059BFD2 /* Preview Assets.xcassets */; };
 		C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A4247EA9A70059BFD2 /* Main.storyboard */; };
 		C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
+		C0C255F224CE178F00E23F01 /* Hack-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */; };
+		C0C255F324CE178F00E23F01 /* Hack-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */; };
+		C0C255F424CE178F00E23F01 /* Hack-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */; };
+		C0C255F524CE178F00E23F01 /* Hack-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F124CE175200E23F01 /* Hack-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +49,10 @@
 		C0B825A7247EA9A70059BFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B825A8247EA9A70059BFD2 /* Swifty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swifty.entitlements; sourceTree = "<group>"; };
 		C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
+		C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Bold.ttf"; sourceTree = "<group>"; };
+		C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Italic.ttf"; sourceTree = "<group>"; };
+		C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-BoldItalic.ttf"; sourceTree = "<group>"; };
+		C0C255F124CE175200E23F01 /* Hack-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,7 @@
 		C0B8259A247EA9A60059BFD2 /* Swifty */ = {
 			isa = PBXGroup;
 			children = (
+				C0C255ED24CE174100E23F01 /* Fonts */,
 				C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */,
 				C016BE642482AD6B00051345 /* WebViewController.swift */,
 				C0B8259F247EA9A70059BFD2 /* Assets.xcassets */,
@@ -116,6 +125,17 @@
 				C0B825A2247EA9A70059BFD2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C0C255ED24CE174100E23F01 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */,
+				C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */,
+				C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */,
+				C0C255F124CE175200E23F01 /* Hack-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,7 +211,11 @@
 			files = (
 				C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */,
 				C05835E2247EB56C00622443 /* Nautilus in Resources */,
+				C0C255F524CE178F00E23F01 /* Hack-Regular.ttf in Resources */,
+				C0C255F424CE178F00E23F01 /* Hack-Italic.ttf in Resources */,
+				C0C255F224CE178F00E23F01 /* Hack-Bold.ttf in Resources */,
 				C0B825A3247EA9A70059BFD2 /* Preview Assets.xcassets in Resources */,
+				C0C255F324CE178F00E23F01 /* Hack-BoldItalic.ttf in Resources */,
 				C0B825A0247EA9A70059BFD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

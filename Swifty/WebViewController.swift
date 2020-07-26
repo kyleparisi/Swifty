@@ -78,6 +78,9 @@ class MyTextStorage: NSTextStorage {
     override init() {
         storage = NSMutableAttributedString()
         super.init()
+        print(font?.familyName)
+        font = NSFont(name: "Hack-Regular", size: 48.0)
+        print(font?.familyName)
     }
 
     required init?(coder _: NSCoder) {
@@ -128,6 +131,8 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
+        print(font?.familyName)
+        
         let ptr = highlight(string, "go", "github")
         let test = String(cString: ptr.r0)
         print(test)
@@ -139,7 +144,9 @@ class MyTextStorage: NSTextStorage {
             let range = NSRange(location: location, length: term.value.count)
             addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
             if term.style.bold == 1 {
-                addAttributes([.font: NSFont.boldSystemFont(ofSize: 12)], range: range)
+                let fontManager = NSFontManager.shared
+                let newFont = fontManager.convert(font!, toHaveTrait: .boldFontMask)
+                addAttributes([.font: newFont], range: range)
             }
             if term.style.italic == 1 {
                 let fontManager = NSFontManager.shared
@@ -166,6 +173,8 @@ class MyTextView: NSTextView {
         enclosingScrollView?.hasHorizontalRuler = false
         enclosingScrollView?.hasVerticalRuler = true
         enclosingScrollView?.rulersVisible = true
+        
+        typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 48.0)!]
     }
     
     override func insertNewline(_ sender: Any?) {

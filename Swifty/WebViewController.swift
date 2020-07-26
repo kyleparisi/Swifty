@@ -59,6 +59,8 @@ struct Term: Decodable {
     let style: Style
 }
 
+typealias IndentInfo = (count: Int, stop: Bool, last: Character)
+
 class WebViewController: NSViewController {
     @IBOutlet var text: NSTextView!
 
@@ -166,8 +168,80 @@ class MyTextView: NSTextView {
         enclosingScrollView?.rulersVisible = true
     }
     
+    override func insertNewline(_ sender: Any?) {
+        super.insertNewline(sender)
+        
+        let range  = self.selectedRange()
+        let cursor = range.location
+        guard cursor != NSNotFound else { return }
+        
+        let content = self.string as NSString
+        
+        let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+        let previousLineRange = content.lineRange(for: NSRange(location: currentLineRange.location - 1, length: 0))
+        let previousLineText  = content.substring(with: previousLineRange)
+  
+        let indentInfo = (count: 0, stop: false, last: Character(" "))
+        let indent = previousLineText.reduce(indentInfo) { (info: IndentInfo, char) -> IndentInfo in
+            guard info.stop == false
+            else {
+                // remember the last non-whitespace char
+                if char == " " || char == "\t" || char == "\n" {
+                    return info
+                } else {
+                    return (count: info.count, stop: info.stop, last: char)
+                }
+            }
+            switch char {
+            case " " : return (stop: false, count: info.count + 1,      last: info.last)
+            case "\t": return (stop: false, count: info.count + 4, last: info.last)
+            default  : return (stop: true , count: info.count,          last: info.last)
+            }
+        }
+        
+        // find the last-non-whitespace char
+        var spaceCount = indent.count
+        
+        switch indent.last {
+        case "{": spaceCount += 4
+        case "}": spaceCount -= 4; if spaceCount < 0 { spaceCount = 0 }
+        default : break
+        }
+        
+        // insert the new indent
+        let start  = NSRange(location: currentLineRange.location, length: 0)
+        let spaces = String(repeating: " ", count: spaceCount)
+
+        super.insertText("\n", replacementRange: start)
+        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+        super.insertText(spaces, replacementRange: start)
+        
+    }
+    
+    func nextCharacter() -> String? {
+        let range  = self.selectedRange()
+        let cursor = range.location
+        guard cursor != NSNotFound else { return nil }
+        let content = self.string as NSString
+        let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+        let lineEnd = currentLineRange.upperBound
+        if (cursor < lineEnd) {
+            let nextChar = content.substring(with: NSRange(location: cursor, length: 1))
+            return nextChar
+        }
+        return nil
+    }
+    
     override func insertText(_ string: Any, replacementRange: NSRange) {
+        
+        let jumpChars = ["}", ")", "\"", "'", "]"]
+        if jumpChars.contains(nextCharacter() ?? "") {
+            setSelectedRange(NSRange(location: selectedRange().location + 1, length: 0))
+            return
+        }
+        
         super.insertText(string, replacementRange: replacementRange)
+        
         let string = string as! String
         if string.count != 1 {
             return

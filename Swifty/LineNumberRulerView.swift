@@ -12,6 +12,7 @@ class LineNumberRulerView: NSRulerView {
     convenience init(textView: NSTextView) {
         self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
         clientView = textView
+        ruleThickness = 40.0
     }
 
     override func drawHashMarksAndLabels(in _: NSRect) {

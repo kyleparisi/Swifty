@@ -12,11 +12,10 @@ class LineNumberRulerView: NSRulerView {
     convenience init(textView: NSTextView) {
         self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
         clientView = textView
-        ruleThickness = 40.0
+        ruleThickness = 12.0
     }
 
     override func drawHashMarksAndLabels(in _: NSRect) {
-//        print("draw line numbers")
         guard let textView = clientView as? NSTextView,
             let layoutManager = textView.layoutManager,
             let textContainer = textView.textContainer
@@ -79,14 +78,25 @@ class LineNumberRulerView: NSRulerView {
         if let _ = layoutManager.extraLineFragmentTextContainer {
             drawLineNumber(num: lineNumber, atYPosition: layoutManager.extraLineFragmentRect.minY)
         }
+        
+        // Determine max width for the gutter
+        let largestNumber = NSAttributedString(string: String(lineNumber), attributes: [.font: textView.font!])
+        let padding = CGFloat(10)
+        let size = largestNumber.size().width.rounded(.up) + padding
+        ruleThickness = size
+        
     }
 
     func drawLineNumber(num: Int, atYPosition yPos: CGFloat) {
         // Unwrap the text view.
         guard let textView = clientView as? NSTextView,
-            let font = textView.font else {
+            var font = textView.font else {
             return
         }
+        let fontManager = NSFontManager.shared
+        font = fontManager.convert(font, toHaveTrait: .unboldFontMask)
+        font = fontManager.convert(font, toHaveTrait: .unitalicFontMask)
+        
         // Define attributes for the attributed string.
         let attrs = [NSAttributedString.Key.font: font]
         // Define the attributed string.

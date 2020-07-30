@@ -131,8 +131,6 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        print(font?.familyName)
-        
         let ptr = highlight(string, "go", "github")
         let test = String(cString: ptr.r0)
         print(test)
@@ -174,7 +172,7 @@ class MyTextView: NSTextView {
         enclosingScrollView?.hasVerticalRuler = true
         enclosingScrollView?.rulersVisible = true
         
-        typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 48.0)!]
+        typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 14.0)!]
     }
     
     override func insertNewline(_ sender: Any?) {
@@ -218,12 +216,12 @@ class MyTextView: NSTextView {
         }
         
         // insert the new indent
-        let start  = NSRange(location: currentLineRange.location, length: 0)
-        let spaces = String(repeating: " ", count: spaceCount)
-
-        super.insertText("\n", replacementRange: start)
-        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
-        super.insertText(spaces, replacementRange: start)
+//        let start  = NSRange(location: currentLineRange.location, length: 0)
+//        let spaces = String(repeating: " ", count: spaceCount)
+//
+//        super.insertText("\n", replacementRange: start)
+//        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+//        super.insertText(spaces, replacementRange: start)
         
     }
     

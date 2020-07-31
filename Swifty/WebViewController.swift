@@ -216,13 +216,14 @@ class MyTextView: NSTextView {
         }
         
         // insert the new indent
-//        let start  = NSRange(location: currentLineRange.location, length: 0)
-//        let spaces = String(repeating: " ", count: spaceCount)
-//
-//        super.insertText("\n", replacementRange: start)
-//        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
-//        super.insertText(spaces, replacementRange: start)
-        
+        let start  = NSRange(location: currentLineRange.location, length: 0)
+        let spaces = String(repeating: " ", count: spaceCount)
+        if nextCharacter() == "}" {
+            // put } on new line first
+            super.insertText("\n", replacementRange: start)
+            setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+        }
+        super.insertText(spaces, replacementRange: start)
     }
     
     func nextCharacter() -> String? {

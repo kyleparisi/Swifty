@@ -53,6 +53,9 @@ struct Term: Decodable {
 
 typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 
+let THEME = "paraiso-dark"
+let LANGUAGE = "php"
+
 class MyViewController: NSViewController {
     @IBOutlet var text: NSTextView!
 
@@ -60,6 +63,17 @@ class MyViewController: NSViewController {
         super.viewDidLoad()
         text.isAutomaticQuoteSubstitutionEnabled = false
         text.isAutomaticDashSubstitutionEnabled = false
+        
+        // initlialize the theme
+        let ptr = colors(THEME)
+        let fg = String(cString: ptr.fg)
+        let bg = String(cString: ptr.bg)
+        text.textColor = NSColor(hex: fg)
+        text.backgroundColor = NSColor(hex: bg)
+        text.insertionPointColor = NSColor(hex: fg)
+        free(ptr.fg)
+        free(ptr.bg)
+        
     }
 }
 
@@ -120,7 +134,7 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        let ptr = highlight(string, "go", "github")
+        let ptr = highlight(string, LANGUAGE, THEME)
         let test = String(cString: ptr.r0)
         print(test)
         free(ptr.r0)
@@ -128,6 +142,7 @@ class MyTextStorage: NSTextStorage {
         let terms: [Term] = try! JSONDecoder().decode([Term].self, from: test.data(using: .utf8)!)
         var location = 0
         for term in terms {
+            print(term.value.count)
             let range = NSRange(location: location, length: term.value.count)
             addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
             if term.style.bold == 1 {

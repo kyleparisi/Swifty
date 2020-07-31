@@ -125,7 +125,7 @@ func colors(c_style *C.char) (*C.char, *C.char) {
 	colors := s.Get(chroma.Background)
 	bgr, _ := regexp.Compile("bg:(#.*)")
 	bgmatch := bgr.FindStringSubmatch(colors.String())
-	fmt.Print(bgmatch)
+	// fmt.Print(bgmatch)
 	fgr, _ := regexp.Compile("(#.*) bg:")
 	fgmatch := fgr.FindStringSubmatch(colors.String())
 	fg := ""

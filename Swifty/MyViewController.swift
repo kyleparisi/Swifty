@@ -53,8 +53,8 @@ struct Term: Decodable {
 
 typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 
-let THEME = "paraiso-dark"
-let LANGUAGE = "php"
+let THEME = "github"
+let LANGUAGE = "js"
 
 class MyViewController: NSViewController {
     @IBOutlet var text: NSTextView!
@@ -142,8 +142,11 @@ class MyTextStorage: NSTextStorage {
         let terms: [Term] = try! JSONDecoder().decode([Term].self, from: test.data(using: .utf8)!)
         var location = 0
         for term in terms {
-            print(term.value.count)
-            let range = NSRange(location: location, length: term.value.count)
+            var range = NSRange(location: location, length: term.value.count)
+            // make sure we're still in bounds. adding attributes to the trailing new line breaks things
+            if (range.upperBound > string.count) {
+                range = NSRange(location: location, length: term.value.count - 1)
+            }
             addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
             if term.style.bold == 1 {
                 let fontManager = NSFontManager.shared

@@ -41,6 +41,7 @@
 		C05835E1247EB56C00622443 /* Nautilus */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Nautilus; sourceTree = "<group>"; };
 		C05835EC247EB60800622443 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C05835FC247ED64400622443 /* nautilus.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = nautilus.a; path = Nautilus/nautilus.a; sourceTree = "<group>"; };
+		C08D15B224D43689000F485F /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = "../../Library/Autosave Information/MyPlayground.playground"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0B82598247EA9A60059BFD2 /* Swifty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swifty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0B8259F247EA9A70059BFD2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -87,6 +88,7 @@
 		C0B8258F247EA9A60059BFD2 = {
 			isa = PBXGroup;
 			children = (
+				C08D15B224D43689000F485F /* MyPlayground.playground */,
 				C05835E1247EB56C00622443 /* Nautilus */,
 				C0B8259A247EA9A60059BFD2 /* Swifty */,
 				C05835EA247EB60800622443 /* Nautilus */,

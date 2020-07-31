@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C016BE652482AD6B00051345 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* WebViewController.swift */; };
+		C016BE652482AD6B00051345 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* MyViewController.swift */; };
 		C04FE9DB248C6B1B00CD4346 /* nautilus_custom.h in Headers */ = {isa = PBXBuildFile; fileRef = C04FE9DA248C6B1B00CD4346 /* nautilus_custom.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C05835E2247EB56C00622443 /* Nautilus in Resources */ = {isa = PBXBuildFile; fileRef = C05835E1247EB56C00622443 /* Nautilus */; };
 		C05835FD247ED64400622443 /* nautilus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C05835FC247ED64400622443 /* nautilus.a */; };
@@ -36,7 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C016BE642482AD6B00051345 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		C016BE642482AD6B00051345 /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 		C04FE9DA248C6B1B00CD4346 /* nautilus_custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nautilus_custom.h; sourceTree = "<group>"; };
 		C05835E1247EB56C00622443 /* Nautilus */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Nautilus; sourceTree = "<group>"; };
 		C05835EC247EB60800622443 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			children = (
 				C0C255ED24CE174100E23F01 /* Fonts */,
 				C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */,
-				C016BE642482AD6B00051345 /* WebViewController.swift */,
+				C016BE642482AD6B00051345 /* MyViewController.swift */,
 				C0B8259F247EA9A70059BFD2 /* Assets.xcassets */,
 				C0B825A4247EA9A70059BFD2 /* Main.storyboard */,
 				C0B825A7247EA9A70059BFD2 /* Info.plist */,
@@ -229,7 +229,7 @@
 			files = (
 				C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */,
 				C0B8259C247EA9A60059BFD2 /* AppDelegate.swift in Sources */,
-				C016BE652482AD6B00051345 /* WebViewController.swift in Sources */,
+				C016BE652482AD6B00051345 /* MyViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

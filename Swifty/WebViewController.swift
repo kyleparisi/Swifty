@@ -78,9 +78,6 @@ class MyTextStorage: NSTextStorage {
     override init() {
         storage = NSMutableAttributedString()
         super.init()
-        print(font?.familyName)
-        font = NSFont(name: "Hack-Regular", size: 48.0)
-        print(font?.familyName)
     }
 
     required init?(coder _: NSCoder) {

@@ -53,7 +53,7 @@ struct Term: Decodable {
 
 typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 
-let THEME = "github"
+let THEME = "dracula"
 let LANGUAGE = "js"
 
 class MyViewController: NSViewController {

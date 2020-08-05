@@ -81,7 +81,7 @@ class LineNumberRulerView: NSRulerView {
         
         // Determine max width for the gutter
         let largestNumber = NSAttributedString(string: String(lineNumber), attributes: [.font: textView.font!])
-        let padding = CGFloat(10)
+        let padding = CGFloat(20)
         let size = largestNumber.size().width.rounded(.up) + padding
         ruleThickness = size
         
@@ -96,16 +96,20 @@ class LineNumberRulerView: NSRulerView {
         let fontManager = NSFontManager.shared
         font = fontManager.convert(font, toHaveTrait: .unboldFontMask)
         font = fontManager.convert(font, toHaveTrait: .unitalicFontMask)
+        font = fontManager.convert(font, toSize: 12.0)
+        
+        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.right
         
         // Define attributes for the attributed string.
-        let attrs = [NSAttributedString.Key.font: font]
+        let attrs = [NSAttributedString.Key.font: font, .foregroundColor: NSColor.gray, .paragraphStyle: paragraphStyle]
         // Define the attributed string.
         let attributedString = NSAttributedString(string: "\(num)", attributes: attrs)
         // Get the NSZeroPoint from the text view.
         let relativePoint = convert(NSZeroPoint, from: textView)
-        // Draw the attributed string to the calculated point.
-        let point = NSPoint(x: 5, y: relativePoint.y + yPos)
-        attributedString.draw(at: point)
+        
+        // todo: fix these calculations to be based on the font size and gutter width
+        attributedString.draw(in: NSRect(x: 0, y: relativePoint.y + yPos + 2, width: ruleThickness - 2, height: CGFloat(14)))
     }
 
     func refresh() {

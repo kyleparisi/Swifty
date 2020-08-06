@@ -147,6 +147,8 @@ class MyTextStorage: NSTextStorage {
 }
 
 class MyTextView: NSTextView {
+    var currentLineColor: NSColor?
+    
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
         
@@ -166,10 +168,43 @@ class MyTextView: NSTextView {
         textColor = NSColor(hex: fg)
         backgroundColor = NSColor(hex: bg)
         insertionPointColor = NSColor(hex: fg)
+        currentLineColor = backgroundColor.highlight(withLevel: 0.05)
         free(ptr.fg)
         free(ptr.bg)
         
         typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 14.0)!]
+    }
+
+    override public var drawsBackground: Bool {
+        set {} // always return false, we'll draw the background
+        get { return false }
+    }
+    
+    override public func draw(_ dirtyRect: NSRect) {
+        guard let context = NSGraphicsContext.current?.cgContext else { return }
+        
+        context.setFillColor(backgroundColor.cgColor)
+        context.fill(dirtyRect)
+
+        var selectedLineRect: NSRect?
+        guard let layout = layoutManager,
+            let container = textContainer,
+            let text = textStorage else { return }
+        
+        if selectedRange().length > 0 {
+            selectedLineRect = nil
+        } else {
+            selectedLineRect = layout.boundingRect(forGlyphRange: (text.string as NSString).paragraphRange(for: selectedRange()), in: container)
+        }
+
+        if let textRect = selectedLineRect {
+            let lineRect = NSRect(x: 0, y: textRect.origin.y, width: dirtyRect.width, height: textRect.height)
+            context.setFillColor(currentLineColor!.cgColor)
+            context.fill(lineRect)
+        }
+        
+        super.draw(dirtyRect)
+
     }
     
     override func insertNewline(_ sender: Any?) {

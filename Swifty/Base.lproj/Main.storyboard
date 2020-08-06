@@ -701,10 +701,10 @@
             </objects>
             <point key="canvasLocation" x="73" y="278"/>
         </scene>
-        <!--My View Controller-->
+        <!--View Controller-->
         <scene sceneID="1iS-xg-nJO">
             <objects>
-                <viewController id="Del-JX-BDj" customClass="MyViewController" customModule="Swifty" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Del-JX-BDj" sceneMemberID="viewController">
                     <view key="view" id="kTj-to-0N8">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -743,9 +743,6 @@
                             <constraint firstAttribute="trailing" secondItem="LOt-Wd-idF" secondAttribute="trailing" id="qBc-QO-Tfk"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="text" destination="x0s-tv-EEX" id="ySg-pL-cel"/>
-                    </connections>
                 </viewController>
                 <customObject id="uu8-qe-lQa" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1bM-9e-XCd" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">

@@ -56,27 +56,6 @@ typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 let THEME = "dracula"
 let LANGUAGE = "js"
 
-class MyViewController: NSViewController {
-    @IBOutlet var text: NSTextView!
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        text.isAutomaticQuoteSubstitutionEnabled = false
-        text.isAutomaticDashSubstitutionEnabled = false
-        
-        // initlialize the theme
-        let ptr = colors(THEME)
-        let fg = String(cString: ptr.fg)
-        let bg = String(cString: ptr.bg)
-        text.textColor = NSColor(hex: fg)
-        text.backgroundColor = NSColor(hex: bg)
-        text.insertionPointColor = NSColor(hex: fg)
-        free(ptr.fg)
-        free(ptr.bg)
-        
-    }
-}
-
 class MyTextStorage: NSTextStorage {
     private var isBusyProcessing = false
     private var storage: NSMutableAttributedString
@@ -170,14 +149,25 @@ class MyTextStorage: NSTextStorage {
 class MyTextView: NSTextView {
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
-        backgroundColor = NSColor(hex: "#fff")
-        textColor = NSColor(hex: "#fff")
-        insertionPointColor = NSColor(hex: "#000")
+        
+        isAutomaticQuoteSubstitutionEnabled = false
+        isAutomaticDashSubstitutionEnabled = false
+
         // gutter
         enclosingScrollView?.verticalRulerView = LineNumberRulerView(textView: self)
         enclosingScrollView?.hasHorizontalRuler = false
         enclosingScrollView?.hasVerticalRuler = true
         enclosingScrollView?.rulersVisible = true
+        
+        // initlialize the theme
+        let ptr = colors(THEME)
+        let fg = String(cString: ptr.fg)
+        let bg = String(cString: ptr.bg)
+        textColor = NSColor(hex: fg)
+        backgroundColor = NSColor(hex: bg)
+        insertionPointColor = NSColor(hex: fg)
+        free(ptr.fg)
+        free(ptr.bg)
         
         typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 14.0)!]
     }

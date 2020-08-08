@@ -181,6 +181,10 @@ class MyTextView: NSTextView {
     }
     
     override public func draw(_ dirtyRect: NSRect) {
+        // I don't know why this is needed but without it the cursor blink off color will the background color
+        // and not the selected line color.  It might have to do with drawBackground: above.
+        backgroundColor = backgroundColor
+        
         guard let context = NSGraphicsContext.current?.cgContext else { return }
         
         context.setFillColor(backgroundColor.cgColor)

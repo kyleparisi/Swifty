@@ -15,13 +15,17 @@ class LineNumberRulerView: NSRulerView {
         ruleThickness = 12.0
     }
 
-    override func drawHashMarksAndLabels(in _: NSRect) {
+    override func drawHashMarksAndLabels(in rect: NSRect) {
         guard let textView = clientView as? NSTextView,
             let layoutManager = textView.layoutManager,
             let textContainer = textView.textContainer
         else {
             return
         }
+        
+        guard let context = NSGraphicsContext.current?.cgContext else { return }
+        context.setFillColor(textView.backgroundColor.cgColor)
+        context.fill(rect)
 
         let visibleGlyphsRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textContainer)
 
@@ -96,10 +100,11 @@ class LineNumberRulerView: NSRulerView {
         let fontManager = NSFontManager.shared
         font = fontManager.convert(font, toHaveTrait: .unboldFontMask)
         font = fontManager.convert(font, toHaveTrait: .unitalicFontMask)
-        font = fontManager.convert(font, toSize: 12.0)
+        font = fontManager.convert(font, toSize: 10.0)
         
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.right
+        paragraphStyle.minimumLineHeight = 12.0
         
         // Define attributes for the attributed string.
         let attrs = [NSAttributedString.Key.font: font, .foregroundColor: NSColor.gray, .paragraphStyle: paragraphStyle]

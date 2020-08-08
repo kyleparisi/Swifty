@@ -168,7 +168,7 @@ class MyTextView: NSTextView {
         textColor = NSColor(hex: fg)
         backgroundColor = NSColor(hex: bg)
         insertionPointColor = NSColor(hex: fg)
-        currentLineColor = backgroundColor.highlight(withLevel: 0.05)
+        currentLineColor = NSColor(hex: bg).highlight(withLevel: 0.05)
         free(ptr.fg)
         free(ptr.bg)
         

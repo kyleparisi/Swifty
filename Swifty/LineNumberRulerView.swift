@@ -12,7 +12,11 @@ class LineNumberRulerView: NSRulerView {
     convenience init(textView: NSTextView) {
         self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
         clientView = textView
-        ruleThickness = 12.0
+        
+        // Determine max width for the gutter
+        let largestNumber = NSAttributedString(string: "8888", attributes: [.font: textView.font!])
+        let size = largestNumber.size().width.rounded(.up)
+        ruleThickness = size
     }
 
     override func drawHashMarksAndLabels(in rect: NSRect) {
@@ -82,13 +86,6 @@ class LineNumberRulerView: NSRulerView {
         if let _ = layoutManager.extraLineFragmentTextContainer {
             drawLineNumber(num: lineNumber, atYPosition: layoutManager.extraLineFragmentRect.minY)
         }
-        
-        // Determine max width for the gutter
-        let largestNumber = NSAttributedString(string: String(lineNumber), attributes: [.font: textView.font!])
-        let padding = CGFloat(20)
-        let size = largestNumber.size().width.rounded(.up) + padding
-        ruleThickness = size
-        
     }
 
     func drawLineNumber(num: Int, atYPosition yPos: CGFloat) {

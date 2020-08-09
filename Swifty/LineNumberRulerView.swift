@@ -18,6 +18,35 @@ class LineNumberRulerView: NSRulerView {
         let size = largestNumber.size().width.rounded(.up)
         ruleThickness = size
     }
+    
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        
+        guard let textView = clientView as? NSTextView,
+            let context = NSGraphicsContext.current?.cgContext
+        else {
+            return
+        }
+        
+        context.setFillColor(textView.backgroundColor.cgColor)
+        context.fill(dirtyRect)
+        
+        // highlight the background of the current selected line
+        var selectedLineRect: NSRect?
+        if textView.selectedRange().length > 0 {
+            selectedLineRect = nil
+        } else {
+            selectedLineRect = textView.layoutManager!.boundingRect(forGlyphRange: textView.selectedRange(), in: textView.textContainer!)
+        }
+        print(selectedLineRect)
+        if let textRect = selectedLineRect {
+            let lineRect = NSRect(x: 0, y: textRect.origin.y, width: ruleThickness, height: textRect.height)
+            context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)
+            context.fill(lineRect)
+        }
+        
+        drawHashMarksAndLabels(in: dirtyRect)
+    }
 
     override func drawHashMarksAndLabels(in rect: NSRect) {
         guard let textView = clientView as? NSTextView,
@@ -25,23 +54,6 @@ class LineNumberRulerView: NSRulerView {
             let textContainer = textView.textContainer
         else {
             return
-        }
-        
-        guard let context = NSGraphicsContext.current?.cgContext else { return }
-        context.setFillColor(textView.backgroundColor.cgColor)
-        context.fill(rect)
-        
-        // highlight the background of the current selected line
-        var selectedLineRect: NSRect?
-        if textView.selectedRange().length > 0 {
-            selectedLineRect = nil
-        } else {
-            selectedLineRect = textView.layoutManager!.boundingRect(forGlyphRange: (textView.textStorage!.string as NSString).paragraphRange(for: textView.selectedRange()), in: textView.textContainer!)
-        }
-        if let textRect = selectedLineRect {
-            let lineRect = NSRect(x: 0, y: textRect.origin.y, width: ruleThickness, height: textRect.height)
-            context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)
-            context.fill(lineRect)
         }
 
         let visibleGlyphsRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textContainer)

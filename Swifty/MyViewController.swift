@@ -192,13 +192,12 @@ class MyTextView: NSTextView {
 
         var selectedLineRect: NSRect?
         guard let layout = layoutManager,
-            let container = textContainer,
-            let text = textStorage else { return }
+            let container = textContainer else { return }
         
         if selectedRange().length > 0 {
             selectedLineRect = nil
         } else {
-            selectedLineRect = layout.boundingRect(forGlyphRange: (text.string as NSString).paragraphRange(for: selectedRange()), in: container)
+            selectedLineRect = layout.boundingRect(forGlyphRange: selectedRange(), in: container)
         }
 
         if let textRect = selectedLineRect {
@@ -208,6 +207,8 @@ class MyTextView: NSTextView {
         }
         
         super.draw(dirtyRect)
+        
+        (enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
 
     }
     
@@ -320,10 +321,6 @@ class MyTextView: NSTextView {
             return
         }
         setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
-    }
-
-    override func didChangeText() {
-        (enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
     }
 }
 

@@ -30,6 +30,19 @@ class LineNumberRulerView: NSRulerView {
         guard let context = NSGraphicsContext.current?.cgContext else { return }
         context.setFillColor(textView.backgroundColor.cgColor)
         context.fill(rect)
+        
+        // highlight the background of the current selected line
+        var selectedLineRect: NSRect?
+        if textView.selectedRange().length > 0 {
+            selectedLineRect = nil
+        } else {
+            selectedLineRect = textView.layoutManager!.boundingRect(forGlyphRange: (textView.textStorage!.string as NSString).paragraphRange(for: textView.selectedRange()), in: textView.textContainer!)
+        }
+        if let textRect = selectedLineRect {
+            let lineRect = NSRect(x: 0, y: textRect.origin.y, width: ruleThickness, height: textRect.height)
+            context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)
+            context.fill(lineRect)
+        }
 
         let visibleGlyphsRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textContainer)
 
@@ -102,20 +115,6 @@ class LineNumberRulerView: NSRulerView {
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.right
         paragraphStyle.minimumLineHeight = 12.0
-        
-        // highlight the background of the current selected line
-        var selectedLineRect: NSRect?
-        if textView.selectedRange().length > 0 {
-            selectedLineRect = nil
-        } else {
-            selectedLineRect = textView.layoutManager!.boundingRect(forGlyphRange: (textView.textStorage!.string as NSString).paragraphRange(for: textView.selectedRange()), in: textView.textContainer!)
-        }
-        guard let context = NSGraphicsContext.current?.cgContext else { return }
-        if let textRect = selectedLineRect {
-            let lineRect = NSRect(x: 0, y: textRect.origin.y, width: ruleThickness, height: textRect.height)
-            context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)
-            context.fill(lineRect)
-        }
         
         // Define attributes for the attributed string.
         let attrs = [NSAttributedString.Key.font: font, .foregroundColor: NSColor.gray, .paragraphStyle: paragraphStyle]

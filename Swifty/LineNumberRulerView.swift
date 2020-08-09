@@ -12,25 +12,25 @@ class LineNumberRulerView: NSRulerView {
     convenience init(textView: NSTextView) {
         self.init(scrollView: textView.enclosingScrollView, orientation: .verticalRuler)
         clientView = textView
-        
+
         // Determine max width for the gutter
         let largestNumber = NSAttributedString(string: "8888", attributes: [.font: textView.font!])
         let size = largestNumber.size().width.rounded(.up)
         ruleThickness = size
     }
-    
+
     override func draw(_ dirtyRect: NSRect) {
         super.draw(dirtyRect)
-        
+
         guard let textView = clientView as? NSTextView,
             let context = NSGraphicsContext.current?.cgContext
         else {
             return
         }
-        
+
         context.setFillColor(textView.backgroundColor.cgColor)
         context.fill(dirtyRect)
-        
+
         // highlight the background of the current selected line
         var selectedLineRect: NSRect?
         if textView.selectedRange().length > 0 {
@@ -43,11 +43,11 @@ class LineNumberRulerView: NSRulerView {
             context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)
             context.fill(lineRect)
         }
-        
+
         drawHashMarksAndLabels(in: dirtyRect)
     }
 
-    override func drawHashMarksAndLabels(in rect: NSRect) {
+    override func drawHashMarksAndLabels(in _: NSRect) {
         guard let textView = clientView as? NSTextView,
             let layoutManager = textView.layoutManager,
             let textContainer = textView.textContainer
@@ -115,26 +115,27 @@ class LineNumberRulerView: NSRulerView {
     func drawLineNumber(num: Int, atYPosition yPos: CGFloat) {
         // Unwrap the text view.
         guard let textView = clientView as? NSTextView,
-            var font = textView.font else {
+            var font = textView.font
+        else {
             return
         }
         let fontManager = NSFontManager.shared
         font = fontManager.convert(font, toHaveTrait: .unboldFontMask)
         font = fontManager.convert(font, toHaveTrait: .unitalicFontMask)
         font = fontManager.convert(font, toSize: 10.0)
-        
+
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.right
         paragraphStyle.minimumLineHeight = 12.0
-        
+
         // Define attributes for the attributed string.
         let attrs = [NSAttributedString.Key.font: font, .foregroundColor: NSColor.gray, .paragraphStyle: paragraphStyle]
         // Define the attributed string.
         let attributedString = NSAttributedString(string: "\(num)", attributes: attrs)
         // Get the NSZeroPoint from the text view.
         let relativePoint = convert(NSZeroPoint, from: textView)
-        
-        // todo: fix these calculations to be based on the font size and gutter width
+
+        // TODO: fix these calculations to be based on the font size and gutter width
         attributedString.draw(in: NSRect(x: 0, y: relativePoint.y + yPos + 2, width: ruleThickness - 2, height: CGFloat(14)))
     }
 

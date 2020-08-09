@@ -11,7 +11,7 @@ extension NSColor {
 
         if cString.count == 3 {
             let last = cString.last
-            for _ in 3...6 {
+            for _ in 3 ... 6 {
                 cString.append(last!)
             }
         }
@@ -35,7 +35,6 @@ extension NSColor {
             alpha: CGFloat(1.0)
         )
     }
-
 }
 
 struct Style: Decodable {
@@ -123,7 +122,7 @@ class MyTextStorage: NSTextStorage {
         for term in terms {
             var range = NSRange(location: location, length: term.value.count)
             // make sure we're still in bounds. adding attributes to the trailing new line breaks things
-            if (range.upperBound > string.count) {
+            if range.upperBound > string.count {
                 range = NSRange(location: location, length: term.value.count - 1)
             }
             addAttributes([.foregroundColor: NSColor(rgbValue: term.style.color)], range: range)
@@ -142,16 +141,15 @@ class MyTextStorage: NSTextStorage {
             }
             location += term.value.count
         }
-
     }
 }
 
 class MyTextView: NSTextView {
     var currentLineColor: NSColor?
-    
+
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
-        
+
         isAutomaticQuoteSubstitutionEnabled = false
         isAutomaticDashSubstitutionEnabled = false
 
@@ -160,7 +158,7 @@ class MyTextView: NSTextView {
         enclosingScrollView?.hasHorizontalRuler = false
         enclosingScrollView?.hasVerticalRuler = true
         enclosingScrollView?.rulersVisible = true
-        
+
         // initlialize the theme
         let ptr = colors(THEME)
         let fg = String(cString: ptr.fg)
@@ -171,7 +169,7 @@ class MyTextView: NSTextView {
         currentLineColor = NSColor(hex: bg).highlight(withLevel: 0.05)
         free(ptr.fg)
         free(ptr.bg)
-        
+
         typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 14.0)!]
     }
 
@@ -179,21 +177,21 @@ class MyTextView: NSTextView {
         set {} // always return false, we'll draw the background
         get { return false }
     }
-    
+
     override public func draw(_ dirtyRect: NSRect) {
         // I don't know why this is needed but without it the cursor blink off color will the background color
         // and not the selected line color.  It might have to do with drawBackground: above.
         backgroundColor = backgroundColor
-        
+
         guard let context = NSGraphicsContext.current?.cgContext else { return }
-        
+
         context.setFillColor(backgroundColor.cgColor)
         context.fill(dirtyRect)
 
         var selectedLineRect: NSRect?
         guard let layout = layoutManager,
             let container = textContainer else { return }
-        
+
         if selectedRange().length > 0 {
             selectedLineRect = nil
         } else {
@@ -205,26 +203,25 @@ class MyTextView: NSTextView {
             context.setFillColor(currentLineColor!.cgColor)
             context.fill(lineRect)
         }
-        
-        super.draw(dirtyRect)
-        
-        (enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
 
+        super.draw(dirtyRect)
+
+        (enclosingScrollView?.verticalRulerView as! LineNumberRulerView).refresh()
     }
-    
+
     override func insertNewline(_ sender: Any?) {
         super.insertNewline(sender)
-        
-        let range  = self.selectedRange()
+
+        let range = selectedRange()
         let cursor = range.location
         guard cursor != NSNotFound else { return }
-        
-        let content = self.string as NSString
-        
-        let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+
+        let content = string as NSString
+
+        let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
         let previousLineRange = content.lineRange(for: NSRange(location: currentLineRange.location - 1, length: 0))
-        let previousLineText  = content.substring(with: previousLineRange)
-  
+        let previousLineText = content.substring(with: previousLineRange)
+
         let indentInfo = (count: 0, stop: false, last: Character(" "))
         let indent = previousLineText.reduce(indentInfo) { (info: IndentInfo, char) -> IndentInfo in
             guard info.stop == false
@@ -237,23 +234,23 @@ class MyTextView: NSTextView {
                 }
             }
             switch char {
-            case " " : return (stop: false, count: info.count + 1,      last: info.last)
+            case " ": return (stop: false, count: info.count + 1, last: info.last)
             case "\t": return (stop: false, count: info.count + 4, last: info.last)
-            default  : return (stop: true , count: info.count,          last: info.last)
+            default: return (stop: true, count: info.count, last: info.last)
             }
         }
-        
+
         // find the last-non-whitespace char
         var spaceCount = indent.count
-        
+
         switch indent.last {
         case "{": spaceCount += 4
         case "}": spaceCount -= 4; if spaceCount < 0 { spaceCount = 0 }
-        default : break
+        default: break
         }
-        
+
         // insert the new indent
-        let start  = NSRange(location: currentLineRange.location, length: 0)
+        let start = NSRange(location: currentLineRange.location, length: 0)
         let spaces = String(repeating: " ", count: spaceCount)
         if nextCharacter() == "}" {
             // put } on new line first
@@ -262,47 +259,46 @@ class MyTextView: NSTextView {
         }
         super.insertText(spaces, replacementRange: start)
     }
-    
+
     func nextCharacter() -> String? {
-        let range  = self.selectedRange()
+        let range = selectedRange()
         let cursor = range.location
         guard cursor != NSNotFound else { return nil }
-        let content = self.string as NSString
-        let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+        let content = string as NSString
+        let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
         let lineEnd = currentLineRange.upperBound
-        if (cursor < lineEnd) {
+        if cursor < lineEnd {
             let nextChar = content.substring(with: NSRange(location: cursor, length: 1))
             return nextChar
         }
         return nil
     }
-    
+
     override func keyDown(with event: NSEvent) {
         let modifierFlags = event.modifierFlags
         let Delete = 51
-        if event.keyCode == Delete && modifierFlags.contains(NSEvent.ModifierFlags.command) {
-            let range  = self.selectedRange()
+        if event.keyCode == Delete, modifierFlags.contains(NSEvent.ModifierFlags.command) {
+            let range = selectedRange()
             let cursor = range.location
             guard cursor != NSNotFound else { return }
-            let content = self.string as NSString
-            let currentLineRange  = content.lineRange(for: NSRange(location: cursor, length: 0))
+            let content = string as NSString
+            let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
             setSelectedRange(currentLineRange)
         }
         super.keyDown(with: event)
     }
-    
+
     override func insertText(_ string: Any, replacementRange: NSRange) {
-        
         let string = string as! String
-        
+
         let jumpChars = ["}", ")", "\"", "'", "]"]
-        if (jumpChars.contains(string) && jumpChars.contains(nextCharacter() ?? "")) {
+        if jumpChars.contains(string), jumpChars.contains(nextCharacter() ?? "") {
             setSelectedRange(NSRange(location: selectedRange().location + 1, length: 0))
             return
         }
-        
+
         super.insertText(string, replacementRange: replacementRange)
-        
+
         if string.count != 1 {
             return
         }
@@ -323,4 +319,3 @@ class MyTextView: NSTextView {
         setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
     }
 }
-

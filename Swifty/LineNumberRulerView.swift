@@ -38,7 +38,6 @@ class LineNumberRulerView: NSRulerView {
         } else {
             selectedLineRect = textView.layoutManager!.boundingRect(forGlyphRange: textView.selectedRange(), in: textView.textContainer!)
         }
-        print(selectedLineRect)
         if let textRect = selectedLineRect {
             let lineRect = NSRect(x: 0, y: textRect.origin.y, width: ruleThickness, height: textRect.height)
             context.setFillColor((textView as! MyTextView).currentLineColor!.cgColor)

@@ -146,6 +146,7 @@ class MyTextStorage: NSTextStorage {
 
 class MyTextView: NSTextView {
     var currentLineColor: NSColor?
+    var insertionLocations: Bool = false
 
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
@@ -259,6 +260,17 @@ class MyTextView: NSTextView {
         }
         super.insertText(spaces, replacementRange: start)
     }
+    
+    override func drawInsertionPoint(in rect: NSRect, color: NSColor, turnedOn flag: Bool) {
+        super.drawInsertionPoint(in: rect, color: color, turnedOn: flag)
+        if insertionLocations {
+            let glyphIndex = layoutManager?.glyphIndexForCharacter(at: 0)
+            let arect = layoutManager?.boundingRect(forGlyphRange: NSRange(location: glyphIndex!, length: 0), in: textContainer!).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
+            let newRect = NSRect(x: arect!.minX, y: arect!.minY, width: 1, height: arect!.height)
+            print(newRect)
+            super.drawInsertionPoint(in: newRect, color: color, turnedOn: flag)
+        }
+    }
 
     func nextCharacter() -> String? {
         let range = selectedRange()
@@ -276,15 +288,23 @@ class MyTextView: NSTextView {
 
     override func keyDown(with event: NSEvent) {
         let modifierFlags = event.modifierFlags
+        let range = selectedRange()
+        let cursor = range.location
+        guard cursor != NSNotFound else { return }
+        let content = string as NSString
+        let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
+        
         let Delete = 51
         if event.keyCode == Delete, modifierFlags.contains(NSEvent.ModifierFlags.command) {
-            let range = selectedRange()
-            let cursor = range.location
-            guard cursor != NSNotFound else { return }
-            let content = string as NSString
-            let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
             setSelectedRange(currentLineRange)
         }
+        
+        let DownArrow = 125
+        if event.keyCode == DownArrow, modifierFlags.contains(NSEvent.ModifierFlags.command) {
+            print("do thing")
+            insertionLocations = true
+        }
+        
         super.keyDown(with: event)
     }
 

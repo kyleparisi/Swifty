@@ -1,0 +1,6 @@
+linters are going to be hard, need to impliment every language by hand
+
+todos:
+multiple cursors
+file management
+autocomplete

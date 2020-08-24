@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C016BE652482AD6B00051345 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* MyViewController.swift */; };
+		C0350E9524E02123007801E4 /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = C0350E9424E02123007801E4 /* notes.txt */; };
 		C04FE9DB248C6B1B00CD4346 /* nautilus_custom.h in Headers */ = {isa = PBXBuildFile; fileRef = C04FE9DA248C6B1B00CD4346 /* nautilus_custom.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C05835E2247EB56C00622443 /* Nautilus in Resources */ = {isa = PBXBuildFile; fileRef = C05835E1247EB56C00622443 /* Nautilus */; };
 		C05835FD247ED64400622443 /* nautilus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C05835FC247ED64400622443 /* nautilus.a */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		C016BE642482AD6B00051345 /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
+		C0350E9424E02123007801E4 /* notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
 		C04FE9DA248C6B1B00CD4346 /* nautilus_custom.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nautilus_custom.h; sourceTree = "<group>"; };
 		C05835E1247EB56C00622443 /* Nautilus */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Nautilus; sourceTree = "<group>"; };
 		C05835EC247EB60800622443 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -111,12 +113,13 @@
 				C0C255ED24CE174100E23F01 /* Fonts */,
 				C0B8259B247EA9A60059BFD2 /* AppDelegate.swift */,
 				C016BE642482AD6B00051345 /* MyViewController.swift */,
+				C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */,
 				C0B8259F247EA9A70059BFD2 /* Assets.xcassets */,
 				C0B825A4247EA9A70059BFD2 /* Main.storyboard */,
 				C0B825A7247EA9A70059BFD2 /* Info.plist */,
 				C0B825A8247EA9A70059BFD2 /* Swifty.entitlements */,
 				C0B825A1247EA9A70059BFD2 /* Preview Content */,
-				C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */,
+				C0350E9424E02123007801E4 /* notes.txt */,
 			);
 			path = Swifty;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0350E9524E02123007801E4 /* notes.txt in Resources */,
 				C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */,
 				C05835E2247EB56C00622443 /* Nautilus in Resources */,
 				C0C255F524CE178F00E23F01 /* Hack-Regular.ttf in Resources */,

@@ -55,6 +55,8 @@ typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 let THEME = "dracula"
 let LANGUAGE = "js"
 
+var insertionLocations: Set<Int> = []
+
 class MyTextStorage: NSTextStorage {
     private var isBusyProcessing = false
     private var storage: NSMutableAttributedString
@@ -146,7 +148,6 @@ class MyTextStorage: NSTextStorage {
 
 class MyTextView: NSTextView {
     var currentLineColor: NSColor?
-    var insertionLocations: Bool = false
 
     override func awakeFromNib() {
         layoutManager?.replaceTextStorage(MyTextStorage())
@@ -260,11 +261,23 @@ class MyTextView: NSTextView {
         }
         super.insertText(spaces, replacementRange: start)
     }
-    
+
     override func drawInsertionPoint(in rect: NSRect, color: NSColor, turnedOn flag: Bool) {
+        // draw current insertion point
         super.drawInsertionPoint(in: rect, color: color, turnedOn: flag)
-        if insertionLocations {
-            let glyphIndex = layoutManager?.glyphIndexForCharacter(at: 0)
+
+        if insertionLocations.isEmpty {
+            return
+        }
+
+        for insertionLocation in insertionLocations {
+            // remove overlapping insertion
+            if selectedRange.location == insertionLocation {
+                insertionLocations.remove(insertionLocation)
+                return
+            }
+
+            let glyphIndex = layoutManager?.glyphIndexForCharacter(at: insertionLocation)
             let arect = layoutManager?.boundingRect(forGlyphRange: NSRange(location: glyphIndex!, length: 0), in: textContainer!).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
             let newRect = NSRect(x: arect!.minX, y: arect!.minY, width: 1, height: arect!.height)
             print(newRect)
@@ -293,18 +306,18 @@ class MyTextView: NSTextView {
         guard cursor != NSNotFound else { return }
         let content = string as NSString
         let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
-        
+
         let Delete = 51
         if event.keyCode == Delete, modifierFlags.contains(NSEvent.ModifierFlags.command) {
             setSelectedRange(currentLineRange)
         }
-        
+
         let DownArrow = 125
         if event.keyCode == DownArrow, modifierFlags.contains(NSEvent.ModifierFlags.command) {
             print("do thing")
-            insertionLocations = true
+            insertionLocations.insert(0)
         }
-        
+
         super.keyDown(with: event)
     }
 

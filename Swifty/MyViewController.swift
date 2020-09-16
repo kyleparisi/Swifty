@@ -116,7 +116,7 @@ class MyTextStorage: NSTextStorage {
     func processSyntaxHighlighting() {
         let ptr = highlight(string, LANGUAGE, THEME)
         let test = String(cString: ptr.r0)
-        print(test)
+        // print(test)
         free(ptr.r0)
         free(ptr.r1)
         let terms: [Term] = try! JSONDecoder().decode([Term].self, from: test.data(using: .utf8)!)
@@ -319,6 +319,26 @@ class MyTextView: NSTextView {
 
         super.keyDown(with: event)
     }
+    
+    override func deleteBackward(_ sender: Any?) {
+        super.deleteBackward(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let location = max(insertionLocation - 1, 0)
+            super.insertText("", replacementRange: NSRange(location: location, length: 1))
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func deleteForward(_ sender: Any?) {
+        super.deleteForward(sender)
+
+        for insertionLocation in insertionLocations {
+            super.insertText("", replacementRange: NSRange(location: insertionLocation, length: 1))
+        }
+    }
 
     override func insertText(_ string: Any, replacementRange: NSRange) {
         let string = string as! String
@@ -355,12 +375,11 @@ class MyTextView: NSTextView {
         if (matched) {
             setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
         }
-        
-        print(insertionLocations)
+
+        // handle multiple insertion locations
         if insertionLocations.isEmpty {
             return
         }
-
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             super.insertText(string, replacementRange: NSRange(location: insertionLocation, length: 0))

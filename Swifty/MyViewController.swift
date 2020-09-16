@@ -280,7 +280,6 @@ class MyTextView: NSTextView {
             let glyphIndex = layoutManager?.glyphIndexForCharacter(at: insertionLocation)
             let arect = layoutManager?.boundingRect(forGlyphRange: NSRange(location: glyphIndex!, length: 0), in: textContainer!).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
             let newRect = NSRect(x: arect!.minX, y: arect!.minY, width: 1, height: arect!.height)
-            print(newRect)
             super.drawInsertionPoint(in: newRect, color: color, turnedOn: flag)
         }
     }
@@ -335,6 +334,9 @@ class MyTextView: NSTextView {
         if string.count != 1 {
             return
         }
+        
+        // auto complete {("'[
+        var matched = true
         switch string[string.startIndex] {
         case "{":
             super.insertText("}", replacementRange: replacementRange)
@@ -347,8 +349,23 @@ class MyTextView: NSTextView {
         case "[":
             super.insertText("]", replacementRange: replacementRange)
         default:
+            matched = false
+        }
+        // go back 1 position because of the auto complete
+        if (matched) {
+            setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+        }
+        
+        print(insertionLocations)
+        if insertionLocations.isEmpty {
             return
         }
-        setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
+
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            super.insertText(string, replacementRange: NSRange(location: insertionLocation, length: 0))
+            newInsertionLocations.insert(insertionLocation + 1)
+        }
+        insertionLocations = newInsertionLocations
     }
 }

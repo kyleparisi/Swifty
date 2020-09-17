@@ -320,6 +320,72 @@ class MyTextView: NSTextView {
         super.keyDown(with: event)
     }
     
+    override func moveLeft(_ sender: Any?) {
+        super.moveLeft(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let location = max(insertionLocation - 1, 0)
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveRight(_ sender: Any?) {
+        super.moveRight(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let location = insertionLocation + 1
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveUp(_ sender: Any?) {
+        super.moveUp(sender)
+        
+        guard
+            let layoutManager = layoutManager,
+            let textContainer = textContainer else {
+            return
+        }
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            // find the glyph location and move just above it's rect,
+            // ask for the location of the glyph at that point
+            let glyphIndex = layoutManager.glyphIndexForCharacter(at: insertionLocation)
+            let rect = layoutManager.boundingRect(forGlyphRange: NSRange(location: glyphIndex, length: 0), in: textContainer).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
+            let point = NSPoint(x: rect.minX, y: rect.maxY - 1)
+            let index = characterIndexForInsertion(at: point)
+            newInsertionLocations.insert(index)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveDown(_ sender: Any?) {
+        super.moveDown(sender)
+        
+        guard
+            let layoutManager = layoutManager,
+            let textContainer = textContainer else {
+            return
+        }
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            // find the glyph location and move just below it's rect,
+            // ask for the location of the glyph at that point
+            let glyphIndex = layoutManager.glyphIndexForCharacter(at: insertionLocation)
+            let rect = layoutManager.boundingRect(forGlyphRange: NSRange(location: glyphIndex, length: 0), in: textContainer).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
+            let point = NSPoint(x: rect.minX, y: rect.maxY + 1)
+            let index = characterIndexForInsertion(at: point)
+            newInsertionLocations.insert(index)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
     override func deleteBackward(_ sender: Any?) {
         super.deleteBackward(sender)
         

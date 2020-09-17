@@ -342,6 +342,36 @@ class MyTextView: NSTextView {
         insertionLocations = newInsertionLocations
     }
     
+    override func moveWordRight(_ sender: Any?) {
+        super.moveWordRight(sender)
+        
+        guard let textStorage = textStorage else {
+            return
+        }
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let location = textStorage.nextWord(from: insertionLocation, forward: true)
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveWordLeft(_ sender: Any?) {
+        super.moveWordLeft(sender)
+        
+        guard let textStorage = textStorage else {
+            return
+        }
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let location = textStorage.nextWord(from: insertionLocation, forward: false)
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
     override func moveUp(_ sender: Any?) {
         super.moveUp(sender)
         

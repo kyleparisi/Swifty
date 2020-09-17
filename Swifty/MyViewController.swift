@@ -372,6 +372,30 @@ class MyTextView: NSTextView {
         insertionLocations = newInsertionLocations
     }
     
+    override func moveToBeginningOfLine(_ sender: Any?) {
+        super.moveToBeginningOfLine(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let content = string as NSString
+            let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
+            newInsertionLocations.insert(currentLineRange.lowerBound)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveToEndOfLine(_ sender: Any?) {
+        super.moveToEndOfLine(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let content = string as NSString
+            let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
+            newInsertionLocations.insert(currentLineRange.upperBound - 1)
+        }
+        insertionLocations = newInsertionLocations
+    }
+    
     override func moveUp(_ sender: Any?) {
         super.moveUp(sender)
         

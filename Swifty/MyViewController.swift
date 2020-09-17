@@ -459,6 +459,20 @@ class MyTextView: NSTextView {
             super.insertText("", replacementRange: NSRange(location: insertionLocation, length: 1))
         }
     }
+    
+    override func deleteToBeginningOfLine(_ sender: Any?) {
+        super.deleteToBeginningOfLine(sender)
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let content = string as NSString
+            let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
+            // keep line intact with \n
+            super.insertText("\n", replacementRange: currentLineRange)
+            newInsertionLocations.insert(currentLineRange.lowerBound)
+        }
+        insertionLocations = newInsertionLocations
+    }
 
     override func insertText(_ string: Any, replacementRange: NSRange) {
         let string = string as! String

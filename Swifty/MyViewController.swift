@@ -300,16 +300,6 @@ class MyTextView: NSTextView {
 
     override func keyDown(with event: NSEvent) {
         let modifierFlags = event.modifierFlags
-        let range = selectedRange()
-        let cursor = range.location
-        guard cursor != NSNotFound else { return }
-        let content = string as NSString
-        let currentLineRange = content.lineRange(for: NSRange(location: cursor, length: 0))
-
-        let Delete = 51
-        if event.keyCode == Delete, modifierFlags.contains(NSEvent.ModifierFlags.command) {
-            setSelectedRange(currentLineRange)
-        }
 
         let DownArrow = 125
         if event.keyCode == DownArrow, modifierFlags.contains(NSEvent.ModifierFlags.command) {
@@ -384,6 +374,27 @@ class MyTextView: NSTextView {
         insertionLocations = newInsertionLocations
     }
     
+    override func moveToBeginningOfLineAndModifySelection(_ sender: Any?) {
+        let content = string as NSString
+        let range = selectedRange()
+        let currentLineRange = content.lineRange(for: range)
+        // adjust line range upper bound down 1 to ignore new line
+        let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
+        var ranges: [NSValue] = [NSValue(range: lineRange)]
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
+            newInsertionLocations.insert(currentLineRange.lowerBound)
+            // adjust line range upper bound down 1 to ignore new line
+            let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
+            ranges.append(NSValue(range: lineRange))
+        }
+        setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+        
+        insertionLocations = newInsertionLocations
+    }
+    
     override func moveToEndOfLine(_ sender: Any?) {
         super.moveToEndOfLine(sender)
         
@@ -393,6 +404,27 @@ class MyTextView: NSTextView {
             let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
             newInsertionLocations.insert(currentLineRange.upperBound - 1)
         }
+        insertionLocations = newInsertionLocations
+    }
+    
+    override func moveToEndOfLineAndModifySelection(_ sender: Any?) {
+        let content = string as NSString
+        let range = selectedRange()
+        let currentLineRange = content.lineRange(for: range)
+        // adjust line range upper bound down 1 to ignore new line
+        let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
+        var ranges: [NSValue] = [NSValue(range: lineRange)]
+        
+        var newInsertionLocations: Set<Int> = Set()
+        for insertionLocation in insertionLocations {
+            let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
+            newInsertionLocations.insert(currentLineRange.lowerBound)
+            // adjust line range upper bound down 1 to ignore new line
+            let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
+            ranges.append(NSValue(range: lineRange))
+        }
+        setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+        
         insertionLocations = newInsertionLocations
     }
     
@@ -441,26 +473,36 @@ class MyTextView: NSTextView {
     }
     
     override func deleteBackward(_ sender: Any?) {
-        super.deleteBackward(sender)
+        print("delete backward")
+        print(selectedRanges)
         
-        var newInsertionLocations: Set<Int> = Set()
-        for insertionLocation in insertionLocations {
-            let location = max(insertionLocation - 1, 0)
-            super.insertText("", replacementRange: NSRange(location: location, length: 1))
-            newInsertionLocations.insert(location)
+        for range in selectedRanges.reversed() {
+            if range.rangeValue.length == 0 {
+                replaceCharacters(in: NSRange(location: range.rangeValue.location - 1, length: 1), with: "")
+            } else {
+                replaceCharacters(in: range.rangeValue, with: "")
+            }
         }
-        insertionLocations = newInsertionLocations
     }
     
     override func deleteForward(_ sender: Any?) {
-        super.deleteForward(sender)
-
-        for insertionLocation in insertionLocations {
-            super.insertText("", replacementRange: NSRange(location: insertionLocation, length: 1))
+        for range in selectedRanges.reversed() {
+            print(range)
+            if range.rangeValue.length == 0 {
+                replaceCharacters(in: NSRange(location: range.rangeValue.location, length: 1), with: "")
+            } else {
+                replaceCharacters(in: range.rangeValue, with: "")
+            }
         }
+//        super.deleteForward(sender)
+
+//        for insertionLocation in insertionLocations {
+//            super.insertText("", replacementRange: NSRange(location: insertionLocation, length: 1))
+//        }
     }
     
     override func deleteToBeginningOfLine(_ sender: Any?) {
+        print("delete line")
         super.deleteToBeginningOfLine(sender)
         
         var newInsertionLocations: Set<Int> = Set()

@@ -236,9 +236,9 @@ class MyTextView: NSTextView {
                 }
             }
             switch char {
-            case " ": return (stop: false, count: info.count + 1, last: info.last)
-            case "\t": return (stop: false, count: info.count + 4, last: info.last)
-            default: return (stop: true, count: info.count, last: info.last)
+            case " ": return (count: info.count + 1, stop: false, last: info.last)
+            case "\t": return (count: info.count + 4, stop: false, last: info.last)
+            default: return (count: info.count, stop: true, last: info.last)
             }
         }
 
@@ -473,12 +473,16 @@ class MyTextView: NSTextView {
     }
     
     override func deleteBackward(_ sender: Any?) {
+        if string.count == 0 {
+            return
+        }
+        
         print("delete backward")
         print(selectedRanges)
         
         for range in selectedRanges.reversed() {
             if range.rangeValue.length == 0 {
-                replaceCharacters(in: NSRange(location: range.rangeValue.location - 1, length: 1), with: "")
+                replaceCharacters(in: NSRange(location: max(range.rangeValue.location - 1, 0), length: 1), with: "")
             } else {
                 replaceCharacters(in: range.rangeValue, with: "")
             }

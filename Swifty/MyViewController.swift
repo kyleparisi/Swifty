@@ -300,6 +300,13 @@ class MyTextView: NSTextView {
 
     override func keyDown(with event: NSEvent) {
         let modifierFlags = event.modifierFlags
+        
+        print(event.keyCode)
+        let Escape = 53
+        if event.keyCode == Escape {
+            insertionLocations = []
+            setSelectedRange(NSRange(location: selectedRange().location, length: 0), affinity: .upstream, stillSelecting: false)
+        }
 
         let DownArrow = 125
         if event.keyCode == DownArrow, modifierFlags.contains(NSEvent.ModifierFlags.command) {
@@ -332,6 +339,28 @@ class MyTextView: NSTextView {
         insertionLocations = newInsertionLocations
     }
     
+    override func moveRightAndModifySelection(_ sender: Any?) {
+        // insertion locations are in selection mode
+        if selectedRanges.count > 1 {
+            var ranges: [NSValue] = []
+            for selected in selectedRanges {
+                let range = selected.rangeValue
+                ranges.append(NSValue(range: NSRange(location: range.location, length: range.length + 1)))
+            }
+            setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+            return
+        }
+        
+        // new selection mode
+        let currentRange = selectedRange()
+        var ranges: [NSValue] = [NSValue(range: NSRange(location: currentRange.location, length: currentRange.length + 1))]
+        for insertionLocation in insertionLocations {
+            ranges.append(NSValue(range: NSRange(location: insertionLocation, length: currentRange.length + 1)))
+        }
+        print("ranges", ranges)
+        setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+    }
+    
     override func moveWordRight(_ sender: Any?) {
         super.moveWordRight(sender)
         
@@ -360,6 +389,29 @@ class MyTextView: NSTextView {
             newInsertionLocations.insert(location)
         }
         insertionLocations = newInsertionLocations
+    }
+    
+    override func moveLeftAndModifySelection(_ sender: Any?) {
+        // insertion locations are in selection mode
+        if selectedRanges.count > 1 {
+            var ranges: [NSValue] = []
+            for selected in selectedRanges {
+                let range = selected.rangeValue
+                ranges.append(NSValue(range: NSRange(location: max(range.location - 1, 0), length: range.length + 1)))
+            }
+            setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+            return
+        }
+        
+        // new selection mode
+        let currentRange = selectedRange()
+        let length = currentRange.length + 1
+        var ranges: [NSValue] = [NSValue(range: NSRange(location: max(currentRange.location - 1, 0), length: length))]
+        for insertionLocation in insertionLocations {
+            ranges.append(NSValue(range: NSRange(location: max(insertionLocation - 1, 0), length: length)))
+        }
+        print("ranges", ranges)
+        setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
     }
     
     override func moveToBeginningOfLine(_ sender: Any?) {

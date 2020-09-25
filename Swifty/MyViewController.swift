@@ -57,6 +57,10 @@ let LANGUAGE = "js"
 
 var insertionLocations: Set<Int> = []
 
+class MyViewContoller: NSViewController {
+    @IBOutlet var textView: MyTextView?
+}
+
 class MyTextStorage: NSTextStorage {
     private var isBusyProcessing = false
     private var storage: NSMutableAttributedString
@@ -300,8 +304,6 @@ class MyTextView: NSTextView {
 
     override func keyDown(with event: NSEvent) {
         let modifierFlags = event.modifierFlags
-        
-        print(event.keyCode)
         let Escape = 53
         if event.keyCode == Escape {
             insertionLocations = []
@@ -314,12 +316,12 @@ class MyTextView: NSTextView {
             insertionLocations.insert(0)
         }
 
-        super.keyDown(with: event)
+        interpretKeyEvents([event])
     }
-    
+
     override func moveLeft(_ sender: Any?) {
         super.moveLeft(sender)
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let location = max(insertionLocation - 1, 0)
@@ -327,10 +329,10 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
+
     override func moveRight(_ sender: Any?) {
         super.moveRight(sender)
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let location = insertionLocation + 1
@@ -338,8 +340,8 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
-    override func moveRightAndModifySelection(_ sender: Any?) {
+
+    override func moveRightAndModifySelection(_: Any?) {
         // insertion locations are in selection mode
         if selectedRanges.count > 1 {
             var ranges: [NSValue] = []
@@ -348,9 +350,21 @@ class MyTextView: NSTextView {
                 ranges.append(NSValue(range: NSRange(location: range.location, length: range.length + 1)))
             }
             setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
+            for insertionLocation in insertionLocations {
+                // remove overlapping insertion
+                if selectedRange.location == insertionLocation {
+                    insertionLocations.remove(insertionLocation)
+                    return
+                }
+
+                let glyphIndex = layoutManager?.glyphIndexForCharacter(at: insertionLocation)
+                let arect = layoutManager?.boundingRect(forGlyphRange: NSRange(location: glyphIndex!, length: 0), in: textContainer!).offsetBy(dx: textContainerOrigin.x, dy: textContainerOrigin.y)
+                let newRect = NSRect(x: arect!.minX, y: arect!.minY, width: 1, height: arect!.height)
+                super.drawInsertionPoint(in: newRect, color: insertionPointColor, turnedOn: true)
+            }
             return
         }
-        
+
         // new selection mode
         let currentRange = selectedRange()
         var ranges: [NSValue] = [NSValue(range: NSRange(location: currentRange.location, length: currentRange.length + 1))]
@@ -360,14 +374,14 @@ class MyTextView: NSTextView {
         print("ranges", ranges)
         setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
     }
-    
+
     override func moveWordRight(_ sender: Any?) {
         super.moveWordRight(sender)
-        
+
         guard let textStorage = textStorage else {
             return
         }
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let location = textStorage.nextWord(from: insertionLocation, forward: true)
@@ -375,14 +389,14 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
+
     override func moveWordLeft(_ sender: Any?) {
         super.moveWordLeft(sender)
-        
+
         guard let textStorage = textStorage else {
             return
         }
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let location = textStorage.nextWord(from: insertionLocation, forward: false)
@@ -390,8 +404,8 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
-    override func moveLeftAndModifySelection(_ sender: Any?) {
+
+    override func moveLeftAndModifySelection(_: Any?) {
         // insertion locations are in selection mode
         if selectedRanges.count > 1 {
             var ranges: [NSValue] = []
@@ -402,7 +416,7 @@ class MyTextView: NSTextView {
             setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
             return
         }
-        
+
         // new selection mode
         let currentRange = selectedRange()
         let length = currentRange.length + 1
@@ -413,10 +427,10 @@ class MyTextView: NSTextView {
         print("ranges", ranges)
         setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
     }
-    
+
     override func moveToBeginningOfLine(_ sender: Any?) {
         super.moveToBeginningOfLine(sender)
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let content = string as NSString
@@ -425,15 +439,15 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
-    override func moveToBeginningOfLineAndModifySelection(_ sender: Any?) {
+
+    override func moveToBeginningOfLineAndModifySelection(_: Any?) {
         let content = string as NSString
         let range = selectedRange()
         let currentLineRange = content.lineRange(for: range)
         // adjust line range upper bound down 1 to ignore new line
         let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
         var ranges: [NSValue] = [NSValue(range: lineRange)]
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
@@ -443,13 +457,13 @@ class MyTextView: NSTextView {
             ranges.append(NSValue(range: lineRange))
         }
         setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
-        
+
         insertionLocations = newInsertionLocations
     }
-    
+
     override func moveToEndOfLine(_ sender: Any?) {
         super.moveToEndOfLine(sender)
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let content = string as NSString
@@ -458,15 +472,15 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
-    override func moveToEndOfLineAndModifySelection(_ sender: Any?) {
+
+    override func moveToEndOfLineAndModifySelection(_: Any?) {
         let content = string as NSString
         let range = selectedRange()
         let currentLineRange = content.lineRange(for: range)
         // adjust line range upper bound down 1 to ignore new line
         let lineRange = NSRange(location: currentLineRange.lowerBound, length: currentLineRange.upperBound - 1)
         var ranges: [NSValue] = [NSValue(range: lineRange)]
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let currentLineRange = content.lineRange(for: NSRange(location: insertionLocation, length: 0))
@@ -476,19 +490,20 @@ class MyTextView: NSTextView {
             ranges.append(NSValue(range: lineRange))
         }
         setSelectedRanges(ranges, affinity: .upstream, stillSelecting: false)
-        
+
         insertionLocations = newInsertionLocations
     }
-    
+
     override func moveUp(_ sender: Any?) {
         super.moveUp(sender)
-        
+
         guard
             let layoutManager = layoutManager,
-            let textContainer = textContainer else {
+            let textContainer = textContainer
+        else {
             return
         }
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             // find the glyph location and move just above it's rect,
@@ -501,16 +516,17 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
+
     override func moveDown(_ sender: Any?) {
         super.moveDown(sender)
-        
+
         guard
             let layoutManager = layoutManager,
-            let textContainer = textContainer else {
+            let textContainer = textContainer
+        else {
             return
         }
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             // find the glyph location and move just below it's rect,
@@ -523,25 +539,40 @@ class MyTextView: NSTextView {
         }
         insertionLocations = newInsertionLocations
     }
-    
+
     override func deleteBackward(_ sender: Any?) {
         if string.count == 0 {
             return
         }
-        
+
         print("delete backward")
         print(selectedRanges)
-        
-        for range in selectedRanges.reversed() {
-            if range.rangeValue.length == 0 {
-                replaceCharacters(in: NSRange(location: max(range.rangeValue.location - 1, 0), length: 1), with: "")
-            } else {
-                replaceCharacters(in: range.rangeValue, with: "")
+
+        // insertion locations are in selection mode
+        if selectedRange().length > 1 {
+            for range in selectedRanges.reversed() {
+                if range.rangeValue.length == 0 {
+                    replaceCharacters(in: NSRange(location: max(range.rangeValue.location - 1, 0), length: 1), with: "")
+                } else {
+                    replaceCharacters(in: range.rangeValue, with: "")
+                }
             }
+
+            return
         }
+
+        super.deleteBackward(sender)
+
+        var newInsertionLocations: Set<Int> = []
+        for insertionLocation in insertionLocations {
+            let location = max(insertionLocation - 1, 0)
+            replaceCharacters(in: NSRange(location: location, length: 1), with: "")
+            newInsertionLocations.insert(location)
+        }
+        insertionLocations = newInsertionLocations
     }
-    
-    override func deleteForward(_ sender: Any?) {
+
+    override func deleteForward(_: Any?) {
         for range in selectedRanges.reversed() {
             print(range)
             if range.rangeValue.length == 0 {
@@ -556,11 +587,11 @@ class MyTextView: NSTextView {
 //            super.insertText("", replacementRange: NSRange(location: insertionLocation, length: 1))
 //        }
     }
-    
+
     override func deleteToBeginningOfLine(_ sender: Any?) {
         print("delete line")
         super.deleteToBeginningOfLine(sender)
-        
+
         var newInsertionLocations: Set<Int> = Set()
         for insertionLocation in insertionLocations {
             let content = string as NSString
@@ -586,7 +617,7 @@ class MyTextView: NSTextView {
         if string.count != 1 {
             return
         }
-        
+
         // auto complete {("'[
         var matched = true
         switch string[string.startIndex] {
@@ -604,7 +635,7 @@ class MyTextView: NSTextView {
             matched = false
         }
         // go back 1 position because of the auto complete
-        if (matched) {
+        if matched {
             setSelectedRange(NSRange(location: selectedRange().location - 1, length: 0))
         }
 

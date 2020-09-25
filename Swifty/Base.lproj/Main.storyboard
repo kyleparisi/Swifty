@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="gRA-0v-dML">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="gRA-0v-dML">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17156"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -701,10 +702,10 @@
             </objects>
             <point key="canvasLocation" x="73" y="278"/>
         </scene>
-        <!--View Controller-->
+        <!--My View Contoller-->
         <scene sceneID="1iS-xg-nJO">
             <objects>
-                <viewController id="Del-JX-BDj" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" id="Del-JX-BDj" customClass="MyViewContoller" customModule="Swifty" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="kTj-to-0N8">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -715,7 +716,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="465" height="270"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsUndo="YES" smartInsertDelete="YES" id="x0s-tv-EEX" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">
+                                        <textView identifier="abc" importsGraphics="NO" richText="NO" verticallyResizable="YES" findStyle="bar" allowsUndo="YES" smartInsertDelete="YES" id="x0s-tv-EEX" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="465" height="270"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -743,6 +744,9 @@
                             <constraint firstAttribute="trailing" secondItem="LOt-Wd-idF" secondAttribute="trailing" id="qBc-QO-Tfk"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="textView" destination="x0s-tv-EEX" id="Otc-bO-etZ"/>
+                    </connections>
                 </viewController>
                 <customObject id="uu8-qe-lQa" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1bM-9e-XCd" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">

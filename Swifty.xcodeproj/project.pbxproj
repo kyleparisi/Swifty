@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C00C187C251BEE1000932EE0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A4247EA9A70059BFD2 /* Main.storyboard */; };
 		C016BE652482AD6B00051345 /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* MyViewController.swift */; };
 		C0350E9524E02123007801E4 /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = C0350E9424E02123007801E4 /* notes.txt */; };
 		C04FE9DB248C6B1B00CD4346 /* nautilus_custom.h in Headers */ = {isa = PBXBuildFile; fileRef = C04FE9DA248C6B1B00CD4346 /* nautilus_custom.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -16,12 +17,26 @@
 		C0B825A0247EA9A70059BFD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B8259F247EA9A70059BFD2 /* Assets.xcassets */; };
 		C0B825A3247EA9A70059BFD2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A2247EA9A70059BFD2 /* Preview Assets.xcassets */; };
 		C0B825A6247EA9A70059BFD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B825A4247EA9A70059BFD2 /* Main.storyboard */; };
+		C0B8ED902516DF8400B5CCBA /* SwiftyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B8ED8F2516DF8400B5CCBA /* SwiftyTests.swift */; };
+		C0B8ED9D2516E0DB00B5CCBA /* nautilus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C05835FC247ED64400622443 /* nautilus.a */; };
+		C0B8EDB82516E62300B5CCBA /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* MyViewController.swift */; };
+		C0B8EDBB2516E65F00B5CCBA /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
 		C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
 		C0C255F224CE178F00E23F01 /* Hack-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */; };
 		C0C255F324CE178F00E23F01 /* Hack-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */; };
 		C0C255F424CE178F00E23F01 /* Hack-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */; };
 		C0C255F524CE178F00E23F01 /* Hack-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F124CE175200E23F01 /* Hack-Regular.ttf */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C0B8ED922516DF8400B5CCBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0B82590247EA9A60059BFD2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0B82597247EA9A60059BFD2;
+			remoteInfo = Swifty;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C05835F1247EB60800622443 /* Embed Frameworks */ = {
@@ -51,6 +66,9 @@
 		C0B825A5247EA9A70059BFD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0B825A7247EA9A70059BFD2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B825A8247EA9A70059BFD2 /* Swifty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swifty.entitlements; sourceTree = "<group>"; };
+		C0B8ED8D2516DF8400B5CCBA /* SwiftyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0B8ED8F2516DF8400B5CCBA /* SwiftyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyTests.swift; sourceTree = "<group>"; };
+		C0B8ED912516DF8400B5CCBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
 		C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Bold.ttf"; sourceTree = "<group>"; };
 		C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Italic.ttf"; sourceTree = "<group>"; };
@@ -64,6 +82,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C05835FD247ED64400622443 /* nautilus.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B8ED8A2516DF8400B5CCBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B8ED9D2516E0DB00B5CCBA /* nautilus.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +120,7 @@
 				C05835E1247EB56C00622443 /* Nautilus */,
 				C0B8259A247EA9A60059BFD2 /* Swifty */,
 				C05835EA247EB60800622443 /* Nautilus */,
+				C0B8ED8E2516DF8400B5CCBA /* SwiftyTests */,
 				C0B82599247EA9A60059BFD2 /* Products */,
 				C05835DE247EB46500622443 /* Frameworks */,
 			);
@@ -103,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				C0B82598247EA9A60059BFD2 /* Swifty.app */,
+				C0B8ED8D2516DF8400B5CCBA /* SwiftyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +160,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		C0B8ED8E2516DF8400B5CCBA /* SwiftyTests */ = {
+			isa = PBXGroup;
+			children = (
+				C0B8ED8F2516DF8400B5CCBA /* SwiftyTests.swift */,
+				C0B8ED912516DF8400B5CCBA /* Info.plist */,
+			);
+			path = SwiftyTests;
+			sourceTree = "<group>";
+		};
 		C0C255ED24CE174100E23F01 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,6 +188,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C04FE9DB248C6B1B00CD4346 /* nautilus_custom.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B8ED982516E08F00B5CCBA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,18 +220,41 @@
 			productReference = C0B82598247EA9A60059BFD2 /* Swifty.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C0B8ED8C2516DF8400B5CCBA /* SwiftyTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0B8ED962516DF8400B5CCBA /* Build configuration list for PBXNativeTarget "SwiftyTests" */;
+			buildPhases = (
+				C0B8ED982516E08F00B5CCBA /* Headers */,
+				C0B8ED892516DF8400B5CCBA /* Sources */,
+				C0B8ED8A2516DF8400B5CCBA /* Frameworks */,
+				C0B8ED8B2516DF8400B5CCBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0B8ED932516DF8400B5CCBA /* PBXTargetDependency */,
+			);
+			name = SwiftyTests;
+			productName = SwiftyTests;
+			productReference = C0B8ED8D2516DF8400B5CCBA /* SwiftyTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		C0B82590247EA9A60059BFD2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1200;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Kyle Parisi";
 				TargetAttributes = {
 					C0B82597247EA9A60059BFD2 = {
 						CreatedOnToolsVersion = 11.5;
+					};
+					C0B8ED8C2516DF8400B5CCBA = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = C0B82597247EA9A60059BFD2;
 					};
 				};
 			};
@@ -205,6 +272,7 @@
 			projectRoot = "";
 			targets = (
 				C0B82597247EA9A60059BFD2 /* Swifty */,
+				C0B8ED8C2516DF8400B5CCBA /* SwiftyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -226,6 +294,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0B8ED8B2516DF8400B5CCBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C00C187C251BEE1000932EE0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -239,7 +315,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0B8ED892516DF8400B5CCBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B8EDBB2516E65F00B5CCBA /* LineNumberRulerView.swift in Sources */,
+				C0B8EDB82516E62300B5CCBA /* MyViewController.swift in Sources */,
+				C0B8ED902516DF8400B5CCBA /* SwiftyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0B8ED932516DF8400B5CCBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0B82597247EA9A60059BFD2 /* Swifty */;
+			targetProxy = C0B8ED922516DF8400B5CCBA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C0B825A4247EA9A70059BFD2 /* Main.storyboard */ = {
@@ -424,6 +518,56 @@
 			};
 			name = Release;
 		};
+		C0B8ED942516DF8400B5CCBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 63GMD6U4J2;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
+				INFOPLIST_FILE = SwiftyTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MODULEMAP_FILE = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyleparisi.SwiftyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swifty.app/Contents/MacOS/Swifty";
+			};
+			name = Debug;
+		};
+		C0B8ED952516DF8400B5CCBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 63GMD6U4J2;
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
+				INFOPLIST_FILE = SwiftyTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MODULEMAP_FILE = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kyleparisi.SwiftyTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swifty.app/Contents/MacOS/Swifty";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -441,6 +585,15 @@
 			buildConfigurations = (
 				C0B825AC247EA9A70059BFD2 /* Debug */,
 				C0B825AD247EA9A70059BFD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0B8ED962516DF8400B5CCBA /* Build configuration list for PBXNativeTarget "SwiftyTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0B8ED942516DF8400B5CCBA /* Debug */,
+				C0B8ED952516DF8400B5CCBA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

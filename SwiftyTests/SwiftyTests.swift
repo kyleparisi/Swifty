@@ -1,16 +1,4 @@
-//
-//  SwiftyTests.swift
-//  SwiftyTests
-//
-//  Created by Kyle Parisi on 9/19/20.
-//  Copyright © 2020 Kyle Parisi. All rights reserved.
-//
-
 import XCTest
-
-func keypress(key: String) -> NSEvent? {
-    return NSEvent.keyEvent(with: .keyDown, location: NSPoint(), modifierFlags: NSEvent.ModifierFlags(rawValue: 256), timestamp: TimeInterval(), windowNumber: 0, context: nil, characters: key, charactersIgnoringModifiers: key, isARepeat: false, keyCode: 0)
-}
 
 class SwiftyTests: XCTestCase {
     var view = MyTextView()
@@ -32,5 +20,21 @@ class SwiftyTests: XCTestCase {
         XCTAssertEqual(view.textStorage?.string, "")
         view.keyDown(with: keypress(key: "a")!)
         XCTAssertEqual(view.textStorage?.string, "a")
+    }
+    
+    func testJSSyntax() throws {
+        LANGUAGE = "js"
+        keyDown(view: view, string: "var")
+        var range = NSRange(location: 0, length: view.textStorage!.length)
+        let color = view.textStorage?.attribute(NSAttributedString.Key.foregroundColor, at: 0, effectiveRange: &range) as! NSColor
+        XCTAssertEqual("#" + color.toHex!, "#8BE9FE")
+    }
+    
+    func testGoSyntax() throws {
+        LANGUAGE = "go"
+        keyDown(view: view, string: "func")
+        var range = NSRange(location: 0, length: view.textStorage!.length)
+        let color = view.textStorage?.attribute(NSAttributedString.Key.foregroundColor, at: 0, effectiveRange: &range) as! NSColor
+        XCTAssertEqual("#" + color.toHex!, "#8BE9FE")
     }
 }

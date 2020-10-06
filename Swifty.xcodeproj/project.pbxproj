@@ -22,10 +22,12 @@
 		C0B8EDB82516E62300B5CCBA /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016BE642482AD6B00051345 /* MyViewController.swift */; };
 		C0B8EDBB2516E65F00B5CCBA /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
 		C0BBD13924AF4AF0001F0C79 /* LineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */; };
+		C0BEC524251F771E00648020 /* Keycodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BEC521251F766D00648020 /* Keycodes.swift */; };
 		C0C255F224CE178F00E23F01 /* Hack-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */; };
 		C0C255F324CE178F00E23F01 /* Hack-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */; };
 		C0C255F424CE178F00E23F01 /* Hack-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */; };
 		C0C255F524CE178F00E23F01 /* Hack-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0C255F124CE175200E23F01 /* Hack-Regular.ttf */; };
+		C0C2FC59252BF92600377149 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C2FC58252BF92600377149 /* Keyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,10 +72,12 @@
 		C0B8ED8F2516DF8400B5CCBA /* SwiftyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyTests.swift; sourceTree = "<group>"; };
 		C0B8ED912516DF8400B5CCBA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0BBD13824AF4AF0001F0C79 /* LineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberRulerView.swift; sourceTree = "<group>"; };
+		C0BEC521251F766D00648020 /* Keycodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycodes.swift; sourceTree = "<group>"; };
 		C0C255EE24CE175200E23F01 /* Hack-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Bold.ttf"; sourceTree = "<group>"; };
 		C0C255EF24CE175200E23F01 /* Hack-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Italic.ttf"; sourceTree = "<group>"; };
 		C0C255F024CE175200E23F01 /* Hack-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-BoldItalic.ttf"; sourceTree = "<group>"; };
 		C0C255F124CE175200E23F01 /* Hack-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Hack-Regular.ttf"; sourceTree = "<group>"; };
+		C0C2FC58252BF92600377149 /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,8 +167,10 @@
 		C0B8ED8E2516DF8400B5CCBA /* SwiftyTests */ = {
 			isa = PBXGroup;
 			children = (
+				C0BEC521251F766D00648020 /* Keycodes.swift */,
 				C0B8ED8F2516DF8400B5CCBA /* SwiftyTests.swift */,
 				C0B8ED912516DF8400B5CCBA /* Info.plist */,
+				C0C2FC58252BF92600377149 /* Keyboard.swift */,
 			);
 			path = SwiftyTests;
 			sourceTree = "<group>";
@@ -319,7 +325,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0BEC524251F771E00648020 /* Keycodes.swift in Sources */,
 				C0B8EDBB2516E65F00B5CCBA /* LineNumberRulerView.swift in Sources */,
+				C0C2FC59252BF92600377149 /* Keyboard.swift in Sources */,
 				C0B8EDB82516E62300B5CCBA /* MyViewController.swift in Sources */,
 				C0B8ED902516DF8400B5CCBA /* SwiftyTests.swift in Sources */,
 			);

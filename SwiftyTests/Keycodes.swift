@@ -16,6 +16,7 @@ struct Keycodes {
     static let tab                       : UInt16 = 0x30
     static let space                     : UInt16 = 0x31
     static let delete                    : UInt16 = 0x33
+    static let backspace                 : UInt16 = 0x7f
     static let escape                    : UInt16 = 0x35
     static let command                   : UInt16 = 0x37
     static let shift                     : UInt16 = 0x38

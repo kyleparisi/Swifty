@@ -330,6 +330,7 @@ class MyTextView: NSTextView {
     }
 
     override func keyDown(with event: NSEvent) {
+        print(event)
         let modifierFlags = event.modifierFlags
         let Escape = 53
         if event.keyCode == Escape {

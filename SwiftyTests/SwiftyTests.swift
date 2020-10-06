@@ -37,4 +37,12 @@ class SwiftyTests: XCTestCase {
         let color = view.textStorage?.attribute(NSAttributedString.Key.foregroundColor, at: 0, effectiveRange: &range) as! NSColor
         XCTAssertEqual("#" + color.toHex!, "#8BE9FE")
     }
+    
+    func testDeleteLine() throws {
+        keyDown(view: view, string: "abc")
+        XCTAssertEqual(view.selectedRange().location, 3)
+        view.keyDown(with: cmd_delete()!)
+        XCTAssertEqual(view.selectedRange().location, 0)
+        XCTAssertEqual(view.textStorage?.string, "")
+    }
 }

@@ -45,4 +45,11 @@ class SwiftyTests: XCTestCase {
         XCTAssertEqual(view.selectedRange().location, 0)
         XCTAssertEqual(view.textStorage?.string, "")
     }
+    
+    func testSelectAll() throws {
+        keyDown(view: view, string: "abc")
+        view.selectAll(nil)
+        XCTAssertEqual(view.selectedRange().location, 0)
+        XCTAssertEqual(view.selectedRange().length, 3)
+    }
 }

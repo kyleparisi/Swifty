@@ -13,3 +13,7 @@ func keyDown(view: NSView, string: String) {
 func cmd_delete() -> NSEvent? {
     return NSEvent.keyEvent(with: .keyDown, location: NSPoint(), modifierFlags: .command, timestamp: TimeInterval(), windowNumber: 0, context: nil, characters: String(format: "%c", Keycodes.backspace), charactersIgnoringModifiers: String(format: "%c", Keycodes.backspace), isARepeat: false, keyCode: 51)
 }
+
+func cmd_a() -> NSEvent? {
+    return NSEvent.keyEvent(with: .keyDown, location: NSPoint(), modifierFlags: .command, timestamp: TimeInterval(), windowNumber: 0, context: nil, characters: "a", charactersIgnoringModifiers: "a", isARepeat: false, keyCode: 0)
+}

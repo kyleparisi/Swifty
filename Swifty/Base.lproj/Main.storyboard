@@ -684,7 +684,7 @@
         <!--Window Controller-->
         <scene sceneID="Axn-fC-5V6">
             <objects>
-                <windowController id="gRA-0v-dML" sceneMemberID="viewController">
+                <windowController storyboardIdentifier="Document Window Controller" id="gRA-0v-dML" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="MTx-7r-hia">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -724,6 +724,14 @@
                                             <size key="minSize" width="465" height="270"/>
                                             <size key="maxSize" width="480" height="10000000"/>
                                             <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <connections>
+                                                <binding destination="Del-JX-BDj" name="value" keyPath="representedObject.contentString" id="EZv-h0-9PT">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <outlet property="delegate" destination="Del-JX-BDj" id="Eni-mH-X19"/>
+                                            </connections>
                                         </textView>
                                     </subviews>
                                 </clipView>
@@ -744,9 +752,6 @@
                             <constraint firstAttribute="trailing" secondItem="LOt-Wd-idF" secondAttribute="trailing" id="qBc-QO-Tfk"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="textView" destination="x0s-tv-EEX" id="Otc-bO-etZ"/>
-                    </connections>
                 </viewController>
                 <customObject id="uu8-qe-lQa" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1bM-9e-XCd" customClass="MyTextView" customModule="Swifty" customModuleProvider="target">
@@ -758,6 +763,7 @@
                     <size key="maxSize" width="389" height="10000000"/>
                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                 </textView>
+                <userDefaultsController representsSharedInstance="YES" id="axj-9Y-q1F"/>
             </objects>
             <point key="canvasLocation" x="780" y="253"/>
         </scene>

@@ -5,11 +5,6 @@ class Document: NSDocument {
     @objc var content = Content(contentString: "")
     var contentViewController: MyViewContoller!
     
-    override init() {
-        super.init()
-        // Add your subclass-specific initialization here.
-    }
-    
     // MARK: - Enablers
     
     // This enables auto save.
@@ -56,52 +51,6 @@ class Document: NSDocument {
     /// - Tag: writeExample
     override func data(ofType typeName: String) throws -> Data {
         return content.data()!
-    }
-    
-    // MARK: - Printing
-    
-    func thePrintInfo() -> NSPrintInfo {
-        let thePrintInfo = NSPrintInfo()
-        thePrintInfo.horizontalPagination = .fit
-        thePrintInfo.isHorizontallyCentered = false
-        thePrintInfo.isVerticallyCentered = false
-        
-        // One inch margin all the way around.
-        thePrintInfo.leftMargin = 72.0
-        thePrintInfo.rightMargin = 72.0
-        thePrintInfo.topMargin = 72.0
-        thePrintInfo.bottomMargin = 72.0
-        
-        printInfo.dictionary().setObject(NSNumber(value: true),
-                                         forKey: NSPrintInfo.AttributeKey.headerAndFooter as NSCopying)
-        
-        return thePrintInfo
-    }
-    
-    @objc
-    func printOperationDidRun(
-        _ printOperation: NSPrintOperation, success: Bool, contextInfo: UnsafeMutableRawPointer?) {
-        // Printing finished...
-    }
-    
-    @IBAction override func printDocument(_ sender: Any?) {
-        // Print the NSTextView.
-        
-        // Create a copy to manipulate for printing.
-        let pageSize = NSSize(width: (printInfo.paperSize.width), height: (printInfo.paperSize.height))
-        let textView = NSTextView(frame: NSRect(x: 0.0, y: 0.0, width: pageSize.width, height: pageSize.height))
-        
-        // Make sure we print on a white background.
-        textView.appearance = NSAppearance(named: .aqua)
-        
-        // Copy the attributed string.
-        textView.textStorage?.append(NSAttributedString(string: content.contentString))
-        
-        let printOperation = NSPrintOperation(view: textView)
-        printOperation.runModal(
-            for: windowControllers[0].window!,
-            delegate: self,
-            didRun: #selector(printOperationDidRun(_:success:contextInfo:)), contextInfo: nil)
     }
     
 }

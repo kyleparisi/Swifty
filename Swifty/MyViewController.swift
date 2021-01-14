@@ -662,7 +662,7 @@ class MyTextView: NSTextView {
         let string = string as! String
 
         let jumpChars = ["}", ")", "\"", "'", "]"]
-        if jumpChars.contains(string), jumpChars.contains(nextCharacter() ?? "") {
+        if jumpChars.contains(string), jumpChars.contains(nextCharacter() ?? ""), (nextCharacter() ?? "") == string {
             setSelectedRange(NSRange(location: selectedRange().location + 1, length: 0))
             return
         }

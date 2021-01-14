@@ -4,6 +4,7 @@ class Document: NSDocument {
     
     @objc var content = Content(contentString: "")
     var contentViewController: MyViewContoller!
+    var lastRead: Date?
     
     // MARK: - Enablers
     
@@ -46,6 +47,7 @@ class Document: NSDocument {
     /// - Tag: readExample
     override func read(from data: Data, ofType typeName: String) throws {
         content.read(from: data)
+        lastRead = fileModificationDate
     }
     
     /// - Tag: writeExample
@@ -53,4 +55,22 @@ class Document: NSDocument {
         return content.data()!
     }
     
+    // Another application modified the file
+    override func presentedItemDidChange() {
+        let attr = try! FileManager.default.attributesOfItem(atPath: fileURL!.path)
+        let modified = attr[.modificationDate] as! Date
+        if (lastRead == modified) {
+            // file not modified from last we've read
+            return
+        }
+
+        // file modified, read again from main event loop
+        DispatchQueue.main.async { [weak self] in
+            guard let doc = self else {
+                return
+            }
+            try? doc.read(from: doc.fileURL!, ofType: doc.fileType!)
+            doc.lastRead = modified
+        }
+    }
 }

@@ -706,3 +706,23 @@ class MyTextView: NSTextView {
         insertionLocations = newInsertionLocations
     }
 }
+
+class LanguageButton: NSButton {
+    override func draw(_ dirtyRect: NSRect) {
+        title = LANGUAGE
+        super.draw(dirtyRect)
+    }
+}
+
+class LanguageMenu: NSMenu, NSMenuDelegate {
+    
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
+        delegate = self
+    }
+    
+    func menuWillOpen(_ menu: NSMenu) {
+        print("hello")
+        item(withTitle: "Javascript")!.state = NSControl.StateValue.on
+    }
+}

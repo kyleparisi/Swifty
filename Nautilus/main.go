@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"strings"
 
 	"github.com/alecthomas/chroma"
 	"github.com/alecthomas/chroma/formatters"
@@ -135,6 +136,12 @@ func colors(c_style *C.char) (*C.char, *C.char) {
 		fg = fgmatch[1]
 	}
 	return C.CString(fg), C.CString(bgmatch[1])
+}
+
+//export names
+func names() *C.char {
+    output := lexers.Names(false)
+    return C.CString(strings.Join(output[:], ","))
 }
 
 // We need an entry point; it's ok for this to be empty

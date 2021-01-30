@@ -719,6 +719,15 @@ class LanguageMenu: NSMenu, NSMenuDelegate {
     required init(coder: NSCoder) {
         super.init(coder: coder)
         delegate = self
+        
+        let languages_ptr = names()
+        let languages_str = String(cString: languages_ptr!)
+        free(languages_ptr)
+        let languages = languages_str.split(separator: ",")
+        for language in languages {
+            let menu_item = NSMenuItem(title: String(language), action: nil, keyEquivalent: "")
+            items.append(menu_item)
+        }
     }
     
     func menuWillOpen(_ menu: NSMenu) {

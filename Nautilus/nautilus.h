@@ -85,6 +85,8 @@ struct colors_return {
 
 extern struct colors_return colors(char* p0);
 
+extern char* names();
+
 #ifdef __cplusplus
 }
 #endif

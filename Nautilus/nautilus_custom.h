@@ -12,3 +12,5 @@ struct colors_return {
 };
 
 extern struct colors_return colors(const char* p0);
+
+extern char* names();

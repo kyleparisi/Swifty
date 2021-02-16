@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="NSView safe area layout guides" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="MkO-bB-za7">
+            <objects>
+                <windowController id="WQg-xl-NA5" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="f9y-bv-hYQ">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="2214" y="313" width="480" height="270"/>
+                        <rect key="screenRect" x="1920" y="0.0" width="1920" height="1055"/>
+                        <view key="contentView" id="9vh-bQ-oyF">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <toolbar key="toolbar" implicitIdentifier="09D11707-F4A3-4FD5-970E-AC5832E91C2B" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="3hC-bz-xQo">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="CY7-H0-Xky"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="X2h-VR-9si"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="qPh-ri-YDN"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="JvR-d3-cmg"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="uvV-vS-1Yf"/>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="CY7-H0-Xky"/>
+                                <toolbarItem reference="X2h-VR-9si"/>
+                                <toolbarItem reference="uvV-vS-1Yf"/>
+                                <toolbarItem reference="qPh-ri-YDN"/>
+                            </defaultToolbarItems>
+                        </toolbar>
+                        <connections>
+                            <outlet property="delegate" destination="WQg-xl-NA5" id="TpH-jf-vkm"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="dIW-Li-qUs" kind="relationship" relationship="window.shadowedContentViewController" id="oR7-uX-SJt"/>
+                    </connections>
+                </windowController>
+                <customObject id="5kH-5x-0bS" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-896" y="199"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="RTA-B8-71o">
+            <objects>
+                <splitViewController id="dIW-Li-qUs" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem canCollapse="YES" holdingPriority="260" behavior="sidebar" id="vMH-Hp-6Ym"/>
+                        <splitViewItem id="FE4-02-6pL"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="ulU-KV-xgg">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </splitView>
+                    <connections>
+                        <segue destination="ZTv-09-RBp" kind="relationship" relationship="splitItems" id="VtG-Vq-Id4"/>
+                        <segue destination="7fI-Zb-w1R" kind="relationship" relationship="splitItems" id="Lax-GP-pk4"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="rhR-6L-uPW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-204" y="203"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="9LX-BU-zyu">
+            <objects>
+                <viewController id="ZTv-09-RBp" sceneMemberID="viewController">
+                    <view key="view" id="qOE-gE-pOO">
+                        <rect key="frame" x="0.0" y="0.0" width="149" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <viewLayoutGuide key="safeArea" id="vKA-e9-8hE"/>
+                        <viewLayoutGuide key="layoutMargins" id="QQ3-PY-X1J"/>
+                    </view>
+                </viewController>
+                <customObject id="GKW-K8-7r5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="316" y="17"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="qb6-Dq-l75">
+            <objects>
+                <viewController id="7fI-Zb-w1R" sceneMemberID="viewController">
+                    <view key="view" id="scb-6K-Mrj">
+                        <rect key="frame" x="0.0" y="0.0" width="302" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <viewLayoutGuide key="safeArea" id="XbV-9Y-E4L"/>
+                        <viewLayoutGuide key="layoutMargins" id="i4w-Oo-4Gc"/>
+                    </view>
+                </viewController>
+                <customObject id="Q9I-FM-EZ3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="392" y="389"/>
+        </scene>
+    </scenes>
+</document>

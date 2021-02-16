@@ -27,7 +27,9 @@ class Document: NSDocument {
     
     /// - Tag: makeWindowControllersExample
     override func makeWindowControllers() {
+        Swift.print(fileURL!.pathExtension)
         LANGUAGE = fileURL!.pathExtension
+        
         // Returns the storyboard that contains your document window.
         let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
         if let windowController =

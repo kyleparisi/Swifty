@@ -204,10 +204,27 @@ class MyTextStorage: NSTextStorage {
     }
 }
 
+class DocumentController: NSDocumentController {
+    @IBAction override func openDocument(_ sender: Any?) {
+        let panel = NSOpenPanel()
+        panel.canChooseDirectories = true
+        panel.canChooseFiles = true
+        panel.begin(completionHandler: { result in
+            self.openDocument(withContentsOf: panel.url!, display: true, completionHandler: { document, documentWasAlreadyOpen, error in
+                if (error != nil) {
+                    print(error)
+                }
+            })
+        })
+    }
+}
+
 class MyTextView: NSTextView {
     var currentLineColor: NSColor?
 
     override func awakeFromNib() {
+        DocumentController()
+        
         layoutManager?.replaceTextStorage(MyTextStorage())
 
         isAutomaticQuoteSubstitutionEnabled = false
@@ -731,7 +748,6 @@ class LanguageMenu: NSMenu, NSMenuDelegate {
     }
     
     func menuWillOpen(_ menu: NSMenu) {
-        print("hello")
         item(withTitle: "Javascript")!.state = NSControl.StateValue.on
     }
 }

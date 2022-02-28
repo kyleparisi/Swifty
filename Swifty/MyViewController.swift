@@ -212,18 +212,42 @@ class DocumentController: NSDocumentController {
         panel.begin(completionHandler: { result in
             self.openDocument(withContentsOf: panel.url!, display: true, completionHandler: { document, documentWasAlreadyOpen, error in
                 if (error != nil) {
-                    print(error)
+                    print(error!)
                 }
             })
         })
     }
 }
 
+@discardableResult
+func installFont(_ font:String) -> Bool {
+
+    guard let fontUrl = Bundle.main.url(forResource: font, withExtension: "ttf") else {
+        return false
+    }
+
+    let fontData = try! Data(contentsOf: fontUrl)
+
+    if let provider = CGDataProvider.init(data: fontData as CFData) {
+
+        var error: Unmanaged<CFError>?
+
+        let font:CGFont = CGFont(provider)!
+        if (!CTFontManagerRegisterGraphicsFont(font, &error)) {
+            print(error.debugDescription)
+            return false
+        } else {
+            return true
+        }
+    }
+    return false
+}
+
 class MyTextView: NSTextView {
     var currentLineColor: NSColor?
 
     override func awakeFromNib() {
-        DocumentController()
+        let _ = DocumentController()
         
         layoutManager?.replaceTextStorage(MyTextStorage())
 
@@ -246,6 +270,8 @@ class MyTextView: NSTextView {
         currentLineColor = NSColor(hex: bg).highlight(withLevel: 0.05)
         free(ptr.fg)
         free(ptr.bg)
+        
+        installFont("Hack-Regular")
 
         typingAttributes = [.font: NSFont(name: "Hack-Regular", size: 14.0)!]
     }

@@ -11,7 +11,7 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillFinishLaunching(_ notification: Notification) {
-        DocumentController()
+        let _ = DocumentController()
     }
     
     func applicationDidFinishLaunching(_: Notification) {}

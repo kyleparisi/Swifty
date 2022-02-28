@@ -74,17 +74,14 @@ struct highlight_return {
 	char* r0;
 	char* r1;
 };
-
-extern struct highlight_return highlight(char* p0, char* p1, char* p2);
+extern struct highlight_return highlight(char* c_source, char* c_lexer, char* c_style);
 
 /* Return type for colors */
 struct colors_return {
 	char* r0;
 	char* r1;
 };
-
-extern struct colors_return colors(char* p0);
-
+extern struct colors_return colors(char* c_style);
 extern char* names();
 
 #ifdef __cplusplus

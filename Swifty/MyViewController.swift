@@ -768,9 +768,15 @@ class LanguageMenu: NSMenu, NSMenuDelegate {
         free(languages_ptr)
         let languages = languages_str.split(separator: ",")
         for language in languages {
-            let menu_item = NSMenuItem(title: String(language), action: nil, keyEquivalent: "")
+            let menu_item = NSMenuItem(title: String(language), action: #selector(selectedLanguage), keyEquivalent: "")
+            menu_item.target = self
+            menu_item.isEnabled = true
             items.append(menu_item)
         }
+    }
+    
+    @objc func selectedLanguage(item: NSMenuItem) {
+        LANGUAGE = item.title
     }
     
     func menuWillOpen(_ menu: NSMenu) {

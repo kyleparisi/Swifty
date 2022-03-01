@@ -79,8 +79,12 @@ struct Term: Decodable {
 
 typealias IndentInfo = (count: Int, stop: Bool, last: Character)
 
-let THEME = "dracula"
-var LANGUAGE = "js"
+struct Editor {
+    var theme: String = "dracula"
+    var language: String = "js"
+    var button: LanguageButton?
+}
+var editor = Editor()
 
 var insertionLocations: Set<Int> = []
 
@@ -172,7 +176,7 @@ class MyTextStorage: NSTextStorage {
     }
 
     func processSyntaxHighlighting() {
-        let ptr = highlight(string, LANGUAGE, THEME)
+        let ptr = highlight(string, editor.language, editor.theme)
         let test = String(cString: ptr.r0)
         // print(test)
         free(ptr.r0)
@@ -261,7 +265,7 @@ class MyTextView: NSTextView {
         enclosingScrollView?.rulersVisible = true
 
         // initlialize the theme
-        let ptr = colors(THEME)
+        let ptr = colors(editor.theme)
         let fg = String(cString: ptr.fg)
         let bg = String(cString: ptr.bg)
         textColor = NSColor(hex: fg)
@@ -751,9 +755,10 @@ class MyTextView: NSTextView {
 }
 
 class LanguageButton: NSButton {
-    override func draw(_ dirtyRect: NSRect) {
-        title = LANGUAGE
-        super.draw(dirtyRect)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        editor.button = self
+        title = editor.language
     }
 }
 
@@ -776,7 +781,8 @@ class LanguageMenu: NSMenu, NSMenuDelegate {
     }
     
     @objc func selectedLanguage(item: NSMenuItem) {
-        LANGUAGE = item.title
+        editor.language = item.title
+        editor.button?.title = item.title
     }
     
     func menuWillOpen(_ menu: NSMenu) {
